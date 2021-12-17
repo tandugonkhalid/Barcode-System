@@ -10,7 +10,6 @@
 <body>
     <nav class="navbar">
         <h1>Real Estate Investment Company</h1>
-        <button>Login</button>
     </nav>
     <section>
         <div class="grid">
@@ -20,13 +19,18 @@
             <img src="images/271618.jpg" alt="Apartments">
         </div>
         <div class="info">
-            <h1>Login</h1>
+            <h1>Login details</h1>
             <form action="method">
                 <div class="form-group">
-                  <label for="">Name</label>
-                  <input type="text"
-                    class="form-control" name="" id="" aria-describedby="helpId" placeholder="">
-                  <small id="helpId" class="form-text text-muted">Help text</small>
+                    <label for="">Name:</label>
+                    <input type="text"
+                        class="form-control" name="name" id="name" aria-describedby="helpId" placeholder="Name">
+                    <br>
+                    <label for="">Password:</label>
+                    <input type="password"
+                        class="form-control" name="password" id="password" aria-describedby="helpId" placeholder="Password">
+                    <br>
+                    <button class="submit">Login</button>
                 </div>
             </form>
         </div>
