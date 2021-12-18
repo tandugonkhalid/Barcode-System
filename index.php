@@ -23,7 +23,7 @@
         </div>
         <div class="info">
             <h1>Login details</h1>
-            <form action="user/user.php" method="post">
+            <form action="login/login.php" method="post">
                 <div class="form-group">
                     <label for="">Name:</label>
                     <input type="text"
