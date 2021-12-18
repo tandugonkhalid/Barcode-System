@@ -1,3 +1,6 @@
+<?php include('db/dbconn.php');
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,7 +23,7 @@
         </div>
         <div class="info">
             <h1>Login details</h1>
-            <form action="method">
+            <form action="user/user.php" method="post">
                 <div class="form-group">
                     <label for="">Name:</label>
                     <input type="text"
@@ -30,10 +33,15 @@
                     <input type="password"
                         class="form-control" name="password" id="password" aria-describedby="helpId" placeholder="Password">
                     <br>
-                    <button class="submit">Login</button>
+                    <input type="submit" class="submit" name="submit"></input>
                 </div>
             </form>
         </div>
     </section>
+
+
+    <?php
+        session_start();
+    ?>
 </body>
 </html>
