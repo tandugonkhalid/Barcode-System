@@ -9,4 +9,14 @@
       //     echo "Connection unsuccessful";
       //     die(print_r(sqlsrv_errors(), true));
       // }
+
+      $servername = "localhost";
+      $username = "root";
+      $password = "";
+      $dbname = "barcode_system";
+
+      $dbconn = new mysqli($servername, $username, $password, $dbname);
+      if ($dbconn->connect_error) {
+      die("Connection failed: " . $dbconn->connect_error);
+      } 
 ?>
