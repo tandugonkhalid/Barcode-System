@@ -9,28 +9,28 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
 </head>
 <body>
-<div class="dashboard row">
-    <nav class="navbar navbar-expand-lg navbar-light p-5 flex-column align-items-start menu col-2">   
+<div class="d-flex flex-row">
+    <nav class="navbar navbar-expand-lg p-5 flex-column align-items-start menu">   
         <a class="navbar-brand text-white" href="#">REIC</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="collapsibleNavbar">
             <ul class="navbar-nav flex-column">
-                <li class="nav-item">
-                    <a href="#Home" class="nav-link active text-white" id="1">Request</a>
+                <li class="nav-item active">
+                    <a href="" class="nav-link text-white">Request</a>
                 </li>
                 <li class="nav-item">
-                 <a href="#About" class="nav-link text-white" id="2">Restocking</a>
+                 <a href="" class="nav-link text-white">Restocking</a>
                 </li>
                 <li class="nav-item">
-                    <a href="#Projects" class="nav-link text-white" id="3">Inventory</a>
+                    <a href="" class="nav-link text-white">Inventory</a>
                 </li>
             </ul>
         </div>
     </nav>
-    <div class="content col-lg">
-        asdfsadf
+    <div class="p-5 col-10">
+        <p>asdfasdfasdf</p>
     </div>
 </div>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
