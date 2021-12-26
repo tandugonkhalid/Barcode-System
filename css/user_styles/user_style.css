@@ -80,4 +80,11 @@ body {
   background-color: #395F67;
   color: white;
 }
+
+.pagination {
+  padding: .5em;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
 /*# sourceMappingURL=user_style.css.map */

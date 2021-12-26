@@ -29,6 +29,7 @@
                 </li>
             </ul>
         </div>
+        <a href="login.php" class="logout text-white">logout</a>
     </nav>
     <div class="p-5 col-10 column-content" >
         <div class="column-content-header">
@@ -92,6 +93,16 @@
                 <td>France</td>
             </tr>
         </table>
+
+        <nav aria-label="Page navigation example" class="pagination">
+                <ul class="pagination">
+                    <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                </ul>
+            </nav>
         </div>
     </div>
 </div>
