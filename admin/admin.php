@@ -29,7 +29,7 @@
                 </li>
             </ul>
         </div>
-        <a href="login.php" class="logout text-white">logout</a>
+        <a href="../index.php" class="logout text-white">logout</a>
     </nav>
     <div class="p-5 col-10 column-content" >
         <div class="column-content-header">
