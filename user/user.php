@@ -45,7 +45,7 @@
             <?php
             include("../db/dbconn.php");
 
-            $results_per_page = 10;
+            $results_per_page = 15;
             $sql = "Select * from houses";
             $result = mysqli_query($dbconn, $sql);
             $number_of_results = mysqli_num_rows($result);
@@ -75,11 +75,16 @@
                 echo "<td>".$row['villa_no']."</td>";
                 echo "<td>".$row['house_type']."</td></tr>";
             }
-
+            
+            $Previous = $page-1;
+            $Next = $page+1;
             ?>
         </table>
         <nav aria-label="Page navigation example" class="pagination">
             <ul class="pagination">
+                <li class="page-item">
+                    <a href="user.php?page=<?=$Previous;?>" class="page-link">Previous</a>
+                </li>
         <?php
             for($page=1; $page<=$number_of_pages; $page++){
                 echo    '<li class="page-item">
@@ -88,6 +93,9 @@
                             
             }
         ?>
+                <li class="page-item">
+                    <a href="user.php?page=<?=$Next;?>" class="page-link">Next</a>
+                </li>
             </ul>
         </nav>
         </div>
