@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 29, 2021 at 07:19 PM
+-- Generation Time: Dec 30, 2021 at 08:14 PM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 8.0.13
 
@@ -446,6 +446,31 @@ INSERT INTO `houses` (`house_id`, `villa_no`, `house_type`) VALUES
 (385, 'Guesthouse # 41', ''),
 (386, 'Guesthouse # 42', '');
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `inventory`
+--
+
+CREATE TABLE `inventory` (
+  `serial_no` int(5) NOT NULL,
+  `appliances` varchar(255) NOT NULL,
+  `type` varchar(255) NOT NULL,
+  `date` date NOT NULL,
+  `invoice_no` varchar(255) NOT NULL,
+  `warranty_date` date NOT NULL,
+  `quantity` int(5) NOT NULL,
+  `user` int(5) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `inventory`
+--
+
+INSERT INTO `inventory` (`serial_no`, `appliances`, `type`, `date`, `invoice_no`, `warranty_date`, `quantity`, `user`) VALUES
+(123456, 'Refrigerator', 'B', '2021-12-30', '0497', '2026-12-30', 14, 2),
+(1234324, 'tv', 'A', '0000-00-00', '1234', '0000-00-00', 100, 2);
+
 --
 -- Indexes for dumped tables
 --
@@ -461,6 +486,12 @@ ALTER TABLE `account`
 --
 ALTER TABLE `houses`
   ADD PRIMARY KEY (`house_id`);
+
+--
+-- Indexes for table `inventory`
+--
+ALTER TABLE `inventory`
+  ADD PRIMARY KEY (`serial_no`);
 
 --
 -- AUTO_INCREMENT for dumped tables

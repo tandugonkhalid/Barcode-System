@@ -38,71 +38,66 @@
         <div >
         <table id="customers">
             <tr>
-                <th>Company</th>
-                <th>Contact</th>
-                <th>Country</th>
+                <th>ID</th>
+                <th>Villa no.</th>
+                <th>House type</th>
             </tr>
-            <tr>
-                <td>Alfreds Futterkiste</td>
-                <td>Maria Anders</td>
-                <td>Germany</td>
-            </tr>
-            <tr>
-                <td>Berglunds snabbköp</td>
-                <td>Christina Berglund</td>
-                <td>Sweden</td>
-            </tr>
-            <tr>
-                <td>Centro comercial Moctezuma</td>
-                <td>Francisco Chang</td>
-                <td>Mexico</td>
-            </tr>
-            <tr>
-                <td>Ernst Handel</td>
-                <td>Roland Mendel</td>
-                <td>Austria</td>
-            </tr>
-            <tr>
-                <td>Island Trading</td>
-                <td>Helen Bennett</td>
-                <td>UK</td>
-            </tr>
-            <tr>
-                <td>Königlich Essen</td>
-                <td>Philip Cramer</td>
-                <td>Germany</td>
-            </tr>
-            <tr>
-                <td>Laughing Bacchus Winecellars</td>
-                <td>Yoshi Tannamuri</td>
-                <td>Canada</td>
-            </tr>
-            <tr>
-                <td>Magazzini Alimentari Riuniti</td>
-                <td>Giovanni Rovelli</td>
-                <td>Italy</td>
-            </tr>
-            <tr>
-                <td>North/South</td>
-                <td>Simon Crowther</td>
-                <td>UK</td>
-            </tr>
-            <tr>
-                <td>Paris spécialités</td>
-                <td>Marie Bertrand</td>
-                <td>France</td>
-            </tr>
-        </table>
+            <?php
+            include("../db/dbconn.php");
 
+            $results_per_page = 15;
+            $sql = "Select * from houses";
+            $result = mysqli_query($dbconn, $sql);
+            $number_of_results = mysqli_num_rows($result);
+
+            // while($row = mysqli_fetch_array($result)){
+            //     echo "<tr><td>".$row['house_id']."</td>";
+            //     echo "<td>".$row['villa_no']."</td>";
+            //     echo "<td>".$row['house_type']."</td></tr>";
+            // }
+            
+            $number_of_pages = ceil($number_of_results/$results_per_page);
+
+            if(!isset($_GET['page'])){
+                $page = 1;
+            }else{
+                $page = $_GET['page'];
+            }
+            
+            $this_page_first_result = ($page-1)*$results_per_page;
+
+            $sql1 = "Select * from houses limit ".$this_page_first_result.','.$results_per_page;
+            $result = mysqli_query($dbconn, $sql1);
+            $number_of_results = mysqli_num_rows($result);
+
+            while($row = mysqli_fetch_array($result)){
+                echo "<tr><td>".$row['house_id']."</td>";
+                echo "<td>".$row['villa_no']."</td>";
+                echo "<td>".$row['house_type']."</td></tr>";
+            }
+            
+            $Previous = $page-1;
+            $Next = $page+1;
+            ?>
+        </table>
         <nav aria-label="Page navigation example" class="pagination">
-                <ul class="pagination">
-                    <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item"><a class="page-link" href="#">Next</a></li>
-                </ul>
-            </nav>
+            <ul class="pagination">
+                <li class="page-item">
+                    <a href="admin.php?page=<?=$Previous;?>" class="page-link">Previous</a>
+                </li>
+        <?php
+            for($page=1; $page<=$number_of_pages; $page++){
+                echo    '<li class="page-item">
+                            <a class="page-link" href="admin.php?page='.$page.'">'.$page.'</a>
+                        </li>';
+                            
+            }
+        ?>
+                <li class="page-item">
+                    <a href="admin.php?page=<?=$Next;?>" class="page-link">Next</a>
+                </li>
+            </ul>
+        </nav>
         </div>
     </div>
 </div>
