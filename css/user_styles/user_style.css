@@ -11,10 +11,13 @@ body {
   background-color: white;
 }
 
+.dashboard {
+  height: 100vh;
+}
+
 .menu {
   font-family: 'Poppins', sans-serif;
   background-color: #385e66;
-  height: 100vh;
 }
 
 .column-content {

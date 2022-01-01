@@ -10,7 +10,7 @@
 
 </head>
 <body>
-<div class="d-flex flex-row">
+<div class="d-flex flex-row dashboard">
     <nav class="navbar navbar-expand-lg p-5 flex-column align-items-start menu">   
         <a class="navbar-brand text-white" href="#">REIC</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
@@ -39,7 +39,40 @@
         <table id="customers">
             <tr>
             <th>Appliances</th>
+            <th>Quantity</th> 
+            </tr>
+
+            <?php 
+            include("../db/dbconn.php");
+
+            $results_per_page = 15;
+            $sql = "Select * from inventory";
+            $result = mysqli_query($dbconn, $sql);
+            $number_of_results = mysqli_num_rows($result);
+
+            while($row = mysqli_fetch_array($result)){
+            
+            if($row['quantity']<=15){
+                echo "<tr><td>".$row['appliances']."</td>";
+                echo "<td id='stocklevel'>".$row['quantity']."</td></tr>";
+            }
+            }
+            ?>
+                        
+        </table>
+        </div>
+        <div class="mt-5 column-content-header">
+            <p class="btn_create">Day Tracker</p>
+        </div>
+        <div >
+        <table id="customers">
+            <tr>
+            <th>Appliances</th>
             <th>Quantity</th>
+            <th>Location</th>
+            <th>New Location</th>
+            <th>Date</th>
+            <th>User</th>
             </tr>
 
             <?php 
