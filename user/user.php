@@ -19,13 +19,13 @@
         <div class="collapse navbar-collapse" id="collapsibleNavbar">
             <ul class="navbar-nav flex-column">
                 <li class="nav-item active">
-                    <a href="" class="nav-link text-white">Request</a>
+                    <a href="request.php" class="nav-link text-white">Request</a>
                 </li>
                 <li class="nav-item">
-                 <a href="" class="nav-link text-white">Restocking</a>
+                 <a href="restocking.php" class="nav-link text-white">Restocking</a>
                 </li>
                 <li class="nav-item">
-                    <a href="" class="nav-link text-white">Inventory</a>
+                    <a href="inventory.php" class="nav-link text-white">Inventory</a>
                 </li>
             </ul>
         </div>
@@ -33,7 +33,7 @@
     </nav>
     <div class="p-5 col-10 column-content" >
         <div class="column-content-header">
-          <p class="btn_create"> Stock levels</p>
+          <p class="btn_create">Stock levels</p>
         </div>
         <div >
         <table id="customers">

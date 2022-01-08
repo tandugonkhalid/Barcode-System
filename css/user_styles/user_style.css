@@ -21,7 +21,6 @@ body {
 }
 
 .column-content {
-  background-color: white;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -46,13 +45,6 @@ body {
   border-radius: 5px;
   border: none;
   padding: 5px 20px 5px 20px;
-  background-color: #546C72;
-  -webkit-transition: 0.4s;
-  transition: 0.4s;
-}
-
-.btn_create:hover {
-  background-color: #36C0DD;
 }
 
 #customers {
