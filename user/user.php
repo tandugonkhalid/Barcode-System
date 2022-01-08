@@ -33,9 +33,9 @@
     </nav>
     <div class="p-5 col-10 column-content" >
         <div class="column-content-header">
-          <p class="btn_create">Stock levels</p>
+          <p class="label">Stock levels</p>
         </div>
-        <div >
+        <div>
         <table id="customers">
             <tr>
             <th>Appliances</th>
@@ -62,7 +62,7 @@
         </table>
         </div>
         <div class="mt-5 column-content-header">
-            <p class="btn_create">Day Tracker</p>
+            <p class="label">Day Tracker</p>
         </div>
         <div >
         <table id="customers">
