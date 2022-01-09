@@ -10,7 +10,9 @@
 
 </head>
 <body>
+<!-- DASBOARD -->
 <div class="d-flex flex-row dashboard">
+    <!-- START OF NAVBAR -->
     <nav class="navbar navbar-expand-lg p-5 flex-column align-items-start menu">   
         <a class="navbar-brand text-white" href="#">REIC</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
@@ -31,6 +33,7 @@
         </div>
         <a href="../index.php" class="logout text-white">logout</a>
     </nav>
+    <!-- END OF NAVBAR -->
     <div class="p-5 col-10 column-content" >
         <div class="column-content-header">
           <p class="label">Stock levels</p>
@@ -41,11 +44,14 @@
             <th>Appliances</th>
             <th>Quantity</th> 
             </tr>
-
             <?php 
+            // DATABASE CONNECTION
             include("../db/dbconn.php");
 
+            // NUMBER OF DATA IN ONE PAGE
             $results_per_page = 15;
+
+            // SELECT QUERY
             $sql = "Select * from inventory";
             $result = mysqli_query($dbconn, $sql);
             $number_of_results = mysqli_num_rows($result);
@@ -76,9 +82,13 @@
             </tr>
 
             <?php 
+            // DATABASE CONNECTION
             include("../db/dbconn.php");
 
+            // NUMBER OF DATA IN ONE PAGE
             $results_per_page = 15;
+
+            // SELECT QUERY
             $sql = "Select * from inventory";
             $result = mysqli_query($dbconn, $sql);
             $number_of_results = mysqli_num_rows($result);

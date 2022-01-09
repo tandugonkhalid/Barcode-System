@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 30, 2021 at 08:14 PM
+-- Generation Time: Jan 09, 2022 at 07:55 PM
 -- Server version: 10.4.22-MariaDB
--- PHP Version: 8.0.13
+-- PHP Version: 8.0.14
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -468,8 +468,34 @@ CREATE TABLE `inventory` (
 --
 
 INSERT INTO `inventory` (`serial_no`, `appliances`, `type`, `date`, `invoice_no`, `warranty_date`, `quantity`, `user`) VALUES
+(9876, 'Dishwasher', 'F', '2022-01-25', '4321', '2022-04-30', 50, 0),
+(12345, 'Washing Machine', 'A', '2022-01-19', '12334', '2021-12-29', 5, 0),
+(15689, 'Oven', 'B', '2022-01-11', '567890', '2022-11-24', 25, 0),
 (123456, 'Refrigerator', 'B', '2021-12-30', '0497', '2026-12-30', 14, 2),
 (1234324, 'tv', 'A', '0000-00-00', '1234', '0000-00-00', 100, 2);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `type`
+--
+
+CREATE TABLE `type` (
+  `type_id` int(5) NOT NULL,
+  `house_type` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `type`
+--
+
+INSERT INTO `type` (`type_id`, `house_type`) VALUES
+(1, 'A'),
+(2, 'B'),
+(3, 'C'),
+(4, 'D'),
+(5, 'E'),
+(6, 'F');
 
 --
 -- Indexes for dumped tables
@@ -494,6 +520,12 @@ ALTER TABLE `inventory`
   ADD PRIMARY KEY (`serial_no`);
 
 --
+-- Indexes for table `type`
+--
+ALTER TABLE `type`
+  ADD PRIMARY KEY (`type_id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -508,6 +540,12 @@ ALTER TABLE `account`
 --
 ALTER TABLE `houses`
   MODIFY `house_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=387;
+
+--
+-- AUTO_INCREMENT for table `type`
+--
+ALTER TABLE `type`
+  MODIFY `type_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

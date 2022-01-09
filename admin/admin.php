@@ -10,7 +10,9 @@
 
 </head>
 <body>
+    <!-- DASHBOARD -->
 <div class="d-flex flex-row">
+    <!-- START OF NAVBAR -->
     <nav class="navbar navbar-expand-lg p-5 flex-column align-items-start menu">   
         <a class="navbar-brand text-white" href="#">REIC</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
@@ -31,6 +33,7 @@
         </div>
         <a href="../index.php" class="logout text-white">logout</a>
     </nav>
+    <!-- END OF NAVBAR -->
     <div class="p-5 col-10 column-content" >
         <div class="column-content-header">
           <button class="btn_create"> Filter</button>
@@ -43,9 +46,13 @@
                 <th>House type</th>
             </tr>
             <?php
+            // DATABASE CONNECTION
             include("../db/dbconn.php");
 
+            // NUMBER OF DATA IN ONE PAGE
             $results_per_page = 15;
+
+            // SELECT QUERY
             $sql = "Select * from houses";
             $result = mysqli_query($dbconn, $sql);
             $number_of_results = mysqli_num_rows($result);
@@ -55,17 +62,23 @@
             //     echo "<td>".$row['villa_no']."</td>";
             //     echo "<td>".$row['house_type']."</td></tr>";
             // }
-            
-            $number_of_pages = ceil($number_of_results/$results_per_page);
 
+
+            
+            // NUMBER OF PAGES DIVIDED WITH NUMBER OF DATA IN ONE PAGE
+            $number_of_pages = ceil($number_of_results/$results_per_page);
+            
+            // IF PAGE SELECTED IS SET
             if(!isset($_GET['page'])){
                 $page = 1;
             }else{
                 $page = $_GET['page'];
             }
             
+            // LIMITER FOR PAGE SELECTED
             $this_page_first_result = ($page-1)*$results_per_page;
 
+            // SELECT QUERY WITH LIMITER
             $sql1 = "Select * from houses limit ".$this_page_first_result.','.$results_per_page;
             $result = mysqli_query($dbconn, $sql1);
             $number_of_results = mysqli_num_rows($result);
@@ -76,6 +89,7 @@
                 echo "<td>".$row['house_type']."</td></tr>";
             }
             
+            // ADD OR MINUS THE CURRENT PAGE NUMBER
             $Previous = $page-1;
             $Next = $page+1;
             ?>
@@ -86,6 +100,7 @@
                     <a href="admin.php?page=<?=$Previous;?>" class="page-link">Previous</a>
                 </li>
         <?php
+        // DISPLAY THE NUMBER OF PAGES WITH PAGE LINK
             for($page=1; $page<=$number_of_pages; $page++){
                 echo    '<li class="page-item">
                             <a class="page-link" href="admin.php?page='.$page.'">'.$page.'</a>

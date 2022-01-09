@@ -9,7 +9,9 @@
     <title>Restocking</title>
 </head>
 <body>
+    <!-- DASHBOARD -->
     <div class="d-flex flex-row dashboard">
+        <!-- START OF NAVBAR -->
         <nav class="navbar navbar-expand-lg p-5 flex-column align-items-start menu">   
             <a class="navbar-brand text-white" href="#">REIC</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
@@ -33,64 +35,136 @@
             </div>
             <a href="../index.php" class="logout text-white">logout</a>
         </nav>
+        <!-- END OF NAVBAR -->
+        <!-- START OF MODAL -->
         <div class="p-5 col-10">
             <div class="column-content-header">
+                <!-- TRIGGER MODAL POPUP -->
                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
                     Add item
                 </button>
           
-
+                <!-- MODAL POPUP -->
                 <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="exampleModalLongTitle">Appliances</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                    </button>
+                                <button type="button" class="btn-close" aria-label="Close" data-dismiss="modal"></button>
                         </div>
-                        <div class="modal-body">
-                            <form method="post">
-                                <label for="">Serial No.</label>
-                                <input type="text">
-                                <br>
-                                <label for="">Description</label>
-                                <input type="text">
-                                <br>
-                                <label for="">Type</label>
-                                <input type="text">
-                                <br>
-                                <label for="">Date received</label>
-                                <input type="text">
-                                <br>
-                                <label for="">Invoice Number</label>
-                                <input type="text">
-                                <br>
-                                <label for="">Warranty date</label>
-                                <input type="text">
-                                <br>
-                                <label for="">Quantity</label>
-                                <input type="text">
-                                <br>
-                                <label for="">Received by</label>
-                                <input type="text">
-                            </form>   
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary">Save changes</button>
-                        </div>
+                        <form method="post" action="restocking.php">
+                            <div class="modal-body">
+                                <div class="form-group">
+                                <div class="p-2">
+                                        <label class="form-check-label" for="">Serial Number</label>
+                                    </div>
+                                    <div class="p-1">
+                                        <input type="text" class="form-control" name="serial_no">
+                                    </div>
+                                    <div class="p-2">
+                                        <label class="form-check-label" for="">Description</label>
+                                    </div>
+                                    <div class="p-1">
+                                        <input type="text" class="form-control" name="desc">
+                                    </div>
+                                    <div class="p-2">
+                                        <label class="form-check-label" for="">House type</label>
+                                    </div>
+                                    <select class="form-control form-control-sm p-1 w-100 dropdown" name="type">
+                                        <!-- POPULATE DATA FROM TYPE TABLE -->
+                                    <?php 
+                                        include("../db/dbconn.php");
+
+                                        $results_per_page = 15;
+                                        $sql = "Select * from type";
+                                        $result = mysqli_query($dbconn, $sql);
+                                        $number_of_results = mysqli_num_rows($result);
+
+                                        while($row = mysqli_fetch_array($result)){
+                                            echo "<option name=".$row['house_type'].">".$row['house_type']."</option>";
+                                        }
+                                    ?>
+                                    </select>
+                                    <div class="p-2">
+                                        <label class="form-check-label" for="">Date Received</label>
+                                    </div>
+                                    <div class="p-1">
+                                        <input type="date" class="form-control" name="date_received">
+                                    </div>
+                                    <div class="p-2">
+                                        <label class="form-check-label" for="">Warranty date</label>
+                                    </div>
+                                    <div class="p-1">
+                                        <input type="date" class="form-control" name="warranty">
+                                    </div>
+                                    <div class="p-2">
+                                        <label class="form-check-label" for="">Invoice Number</label>
+                                    </div>
+                                    <div class="p-1">
+                                        <input type="text" class="form-control" name="invoice">
+                                    </div>
+                                    <div class="p-2">
+                                        <label class="form-check-label" for="">Quantity</label>
+                                    </div>
+                                    <div class="p-1">
+                                        <input type="text" class="form-control" name="quantity">
+                                    </div>
+                                    <div class="p-2">
+                                        <label class="form-check-label" for="">Received by</label>
+                                    </div>
+                                    <select class="form-control form-control-sm p-1" name="users">
+                                        <!-- POPULATE DATA FROM ACCOUNT TABLE -->
+                                    <?php 
+                                        include("../db/dbconn.php");
+
+                                        $results_per_page = 15;
+                                        $sql = "Select * from account";
+                                        $result = mysqli_query($dbconn, $sql);
+                                        $number_of_results = mysqli_num_rows($result);
+
+                                        while($row = mysqli_fetch_array($result)){
+                                            echo "<option name=".$row['EMAIL'].">".$row['EMAIL']."</option>";
+                                        }
+                                    ?>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <input type="submit" class="btn btn-primary" value="Save changes"></input>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
           <?php
+            //DATABASE CONNECTION   
             include("../db/dbconn.php");
 
-            $results_per_page = 15;
-            $sql = "insert into (serial_no,appliances,type,date,invoice_no,warranty_date,quantity,user) from inventory values()";
-            $result = mysqli_query($dbconn, $sql);
+            // CHECK IF INPUT IS ALREADY SET
+            if(isset($_POST['serial_no'])){
+                $serial = $_POST['serial_no'];
+                $desc = $_POST['desc'];
+                $type = $_POST['type'];
+                $date_received = $_POST['date_received'];
+                $invoice = $_POST['invoice'];
+                $warranty = $_POST['warranty'];
+                $quantity = $_POST['quantity'];
+                $users = $_POST['users'];
+
+                // INSERT QUERY
+                $sql = "insert into inventory (serial_no,appliances,type,date,invoice_no,warranty_date,quantity,user) 
+                values('$serial','$desc','$type','$date_received','$invoice','$warranty'
+                ,'$quantity','$users')";
+                if(mysqli_query($dbconn, $sql)){
+                    // echo "inserted successfully";
+                }else{
+                    echo "ERROR: Could not able to execute $sql. " . mysqli_error($dbconn);
+                }
+            }
           ?>
 
+        <!-- TABLE FOR INVENTORY -->
         </div>
             <div>
                 <table id="customers">
@@ -106,9 +180,11 @@
                     <th>Action</th>
                     </tr>
                     
+                    <!-- ADD PHP CODE FOR SELECT QUERY -->
                 </table>
             </div>
         </div>
+        <!-- END OF MODAL POPUP -->
     </div>
 
 
