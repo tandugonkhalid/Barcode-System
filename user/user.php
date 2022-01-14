@@ -24,10 +24,7 @@
                     <a href="request.php" class="nav-link text-white">Request</a>
                 </li>
                 <li class="nav-item">
-                 <a href="restocking.php" class="nav-link text-white">Restocking</a>
-                </li>
-                <li class="nav-item">
-                    <a href="inventory.php" class="nav-link text-white">Inventory</a>
+                 <a href="restocking.php" class="nav-link text-white">Inventory</a>
                 </li>
             </ul>
         </div>
@@ -44,7 +41,7 @@
             <th>Appliances</th>
             <th>Quantity</th> 
             </tr>
-            <?php 
+            <?php
             // DATABASE CONNECTION
             include("../db/dbconn.php");
 
@@ -56,12 +53,11 @@
             $result = mysqli_query($dbconn, $sql);
             $number_of_results = mysqli_num_rows($result);
 
-            while($row = mysqli_fetch_array($result)){
-            
-            if($row['quantity']<=15){
-                echo "<tr><td>".$row['appliances']."</td>";
-                echo "<td id='stocklevel'>".$row['quantity']."</td></tr>";
-            }
+            while ($row = mysqli_fetch_array($result)) {
+                if ($row['quantity']<=15) {
+                    echo "<tr><td>".$row['appliances']."</td>";
+                    echo "<td id='stocklevel'>".$row['quantity']."</td></tr>";
+                }
             }
             ?>
                         
@@ -81,7 +77,7 @@
             <th>User</th>
             </tr>
 
-            <?php 
+            <?php
             // DATABASE CONNECTION
             include("../db/dbconn.php");
 
@@ -93,12 +89,11 @@
             $result = mysqli_query($dbconn, $sql);
             $number_of_results = mysqli_num_rows($result);
 
-            while($row = mysqli_fetch_array($result)){
-            
-            if($row['quantity']<=15){
-                echo "<tr><td>".$row['appliances']."</td>";
-                echo "<td id='stocklevel'>".$row['quantity']."</td></tr>";
-            }
+            while ($row = mysqli_fetch_array($result)) {
+                if ($row['quantity']<=15) {
+                    echo "<tr><td>".$row['appliances']."</td>";
+                    echo "<td id='stocklevel'>".$row['quantity']."</td></tr>";
+                }
             }
             ?>
                         

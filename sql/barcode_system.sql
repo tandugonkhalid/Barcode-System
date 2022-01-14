@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 09, 2022 at 07:55 PM
+-- Generation Time: Jan 14, 2022 at 08:20 PM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 8.0.14
 
@@ -453,6 +453,7 @@ INSERT INTO `houses` (`house_id`, `villa_no`, `house_type`) VALUES
 --
 
 CREATE TABLE `inventory` (
+  `barcode_number` int(5) NOT NULL,
   `serial_no` int(5) NOT NULL,
   `appliances` varchar(255) NOT NULL,
   `type` varchar(255) NOT NULL,
@@ -467,12 +468,15 @@ CREATE TABLE `inventory` (
 -- Dumping data for table `inventory`
 --
 
-INSERT INTO `inventory` (`serial_no`, `appliances`, `type`, `date`, `invoice_no`, `warranty_date`, `quantity`, `user`) VALUES
-(9876, 'Dishwasher', 'F', '2022-01-25', '4321', '2022-04-30', 50, 0),
-(12345, 'Washing Machine', 'A', '2022-01-19', '12334', '2021-12-29', 5, 0),
-(15689, 'Oven', 'B', '2022-01-11', '567890', '2022-11-24', 25, 0),
-(123456, 'Refrigerator', 'B', '2021-12-30', '0497', '2026-12-30', 14, 2),
-(1234324, 'tv', 'A', '0000-00-00', '1234', '0000-00-00', 100, 2);
+INSERT INTO `inventory` (`barcode_number`, `serial_no`, `appliances`, `type`, `date`, `invoice_no`, `warranty_date`, `quantity`, `user`) VALUES
+(1, 9876, 'Dishwasher', 'F', '2022-01-25', '4321', '2022-04-30', 50, 0),
+(2, 12345, 'Washing Machine', 'A', '2022-01-19', '12334', '2021-12-29', 5, 0),
+(3, 15689, 'Oven', 'B', '2022-01-11', '567890', '2022-11-24', 25, 0),
+(4, 123456, 'Refrigerator', 'B', '2021-12-30', '0497', '2026-12-30', 14, 2),
+(5, 1234324, 'tv', 'A', '0000-00-00', '1234', '0000-00-00', 100, 2),
+(6, 7896789, 'Refrigerator', 'A', '2022-01-27', '14949', '2022-04-01', 50, 0),
+(7, 21432314, 'Dryer', 'A', '2022-02-01', '18247128', '2022-04-28', 15, 0),
+(1231243, 3123123, 'Oven Top', 'A', '2022-01-19', '1234134', '2022-02-05', 50, 0);
 
 -- --------------------------------------------------------
 
@@ -517,7 +521,7 @@ ALTER TABLE `houses`
 -- Indexes for table `inventory`
 --
 ALTER TABLE `inventory`
-  ADD PRIMARY KEY (`serial_no`);
+  ADD PRIMARY KEY (`barcode_number`);
 
 --
 -- Indexes for table `type`
@@ -540,6 +544,12 @@ ALTER TABLE `account`
 --
 ALTER TABLE `houses`
   MODIFY `house_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=387;
+
+--
+-- AUTO_INCREMENT for table `inventory`
+--
+ALTER TABLE `inventory`
+  MODIFY `barcode_number` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1231244;
 
 --
 -- AUTO_INCREMENT for table `type`
