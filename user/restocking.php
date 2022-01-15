@@ -209,7 +209,7 @@
                         <td>".$row['email']."</td>
                         <td style='display:none'>".$row['account_id']."</td>
                         <td><button class='btn btn-primary btn_edit' data-toggle='modal' data-target='#editmodal' id='editbtn'>Edit</button>
-                        <button class='btn btn-danger' data-toggle='modal' data-target='#deletemodal'>Delete</button></td></tr>";
+                        <button class='btn btn-danger btn_delete' data-toggle='modal' data-target='#deletemodal'>Delete</button></td></tr>";
                     }
                     mysqli_close($dbconn);
                     ?>
@@ -354,9 +354,9 @@
                 <?php
                 //DATABASE CONNECTION
                 include("../db/dbconn.php");
-
+                
                 // CHECK IF INPUT IS ALREADY SET
-                if (isset($_POST['serial_value'])) {
+                if (isset($_POST['barcode_value'])) {
                     $barcode = $_POST['barcode_value'];
                     $serial = $_POST['serial_value'];
                     $desc = $_POST['desc_value'];
@@ -382,7 +382,12 @@
                 mysqli_close($dbconn);
                 ?>
                 <!-- END OF EDIT MODAL -->
-
+                <script>
+                    $('.btn_delete').click(function(){
+                        var barcode_value = $(this).closest('tr').children('td:eq(0)').text();
+                        document.getElementById('barcode_num').value = barcode_value;
+                    });
+                </script>
                 <!-- START OF DELETE MODAL -->
                 <div class="modal fade" id="deletemodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -392,16 +397,32 @@
                                 <button type="button" class="btn-close" aria-label="Close" data-dismiss="modal"></button>
                                 </button>
                             </div>
-                            <div class="modal-body">
-                                <p>Are you sure you want to delete this row?</p>
-                            <?php
-                                //ADD PHP CODE TO GET SELECTED ROW IN TABLE
-                            ?>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-primary">Yes</button>
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
-                            </div>
+                            <form action="restocking.php" method="POST">
+                                <div class="modal-body">
+                                    <p>Are you sure you want to delete this row?</p>
+                                    <div class="p-1">
+                                        <input type="hidden" class="form-control" name="barcode_value" id="barcode_num" required>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <input type="submit" class="btn btn-primary" value="Yes" name="btn_delete"></input>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                                </div>
+                                <?php
+                                include("../db/dbconn.php");
+                                    if(isset($_POST['btn_delete'])){
+                                        $barcode = $_POST['barcode_value'];
+                                        $sql = "delete from inventory WHERE barcode_number = '$barcode'";
+                                            if (mysqli_query($dbconn, $sql)) {
+                                                echo "Deleted successfully";
+                                                echo "<meta http-equiv='refresh' content='0'>";
+                                            } else {
+                                                echo "ERROR: Could not able to execute $sql. " . mysqli_error($dbconn);
+                                            }
+                                    }
+                                mysqli_close($dbconn);
+                                ?>
+                            </form>
                         </div>
                     </div>
                 </div>
