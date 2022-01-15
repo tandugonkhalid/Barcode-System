@@ -241,7 +241,7 @@
                     document.getElementById('warranty').value = warranty_value;
                     document.getElementById('quantity').value = quantity_value;
                     document.getElementById('user').value = user_value;
-                    document.getElementById('account').value = account_value;
+                    // document.getElementById('account').value = account_value;
                     });
                 </script>
 
@@ -331,18 +331,14 @@
                                         $number_of_results = mysqli_num_rows($result);
 
                                         while ($row = mysqli_fetch_array($result)) {
-                                            echo "<option name=".$row['EMAIL'].">".$row['EMAIL']."</option>";
+                                            echo "<option value=".$row['ACCOUNT_ID'].">".$row['EMAIL']."</option>";
                                         }
                                         mysqli_close($dbconn);
                                     ?>
-                                    <script>
-                                        var x = document.getElementById("user").value;
-                                        console.log(x);
-                                    </script>
                                     </select>
-                                    <div class="p-1">
+                                    <!-- <div class="p-1">
                                         <input type="hidden" class="form-control" name="account_value" id="account" required>
-                                    </div>
+                                    </div> -->
                                 </div>
                             </div>
                             <div class="modal-footer">
@@ -370,17 +366,18 @@
                     $warranty = $_POST['warranty_value'];
                     $quantity = $_POST['quantity_value'];
                     $users = $_POST['users_value'];
-                    $account = $_POST['account_value'];
+                    // $account = $_POST['account_value'];
 
                     // UPDATE QUERY
-                    // $sql = "update inventory set serial_no='$serial', appliances='$desc', type='$type', 
-                    // date='$date_received', invoice_no='$invoice', warranty_date='$warranty', quantity='$quantity', serial_no='$serial' WHERE barcode_number = '$barcode'";
-                    // if (mysqli_query($dbconn, $sql)) {
-                    //     echo "updated successfully";
-                    // } else {
-                    //     echo "ERROR: Could not able to execute $sql. " . mysqli_error($dbconn);
-                    // }
-                    echo $type." ".$users." ".$account;
+                    $sql = "update inventory set serial_no='$serial', appliances='$desc', type='$type', 
+                    date='$date_received', invoice_no='$invoice', warranty_date='$warranty', quantity='$quantity', user='$users' WHERE barcode_number = '$barcode'";
+                    if (mysqli_query($dbconn, $sql)) {
+                        // echo "updated successfully";
+                        echo "<meta http-equiv='refresh' content='0'>";
+                    } else {
+                        echo "ERROR: Could not able to execute $sql. " . mysqli_error($dbconn);
+                    }
+                    // echo $type." ".$users." ".$account;
                 }
                 mysqli_close($dbconn);
                 ?>
