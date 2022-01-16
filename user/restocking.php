@@ -220,6 +220,7 @@
                     $(".btn_edit").click(function(){ 
 
                     // CODE FOR GETTING DATA OF SELECTED ROW TO MODAL
+                    // DITO ATA YUNG MAY PROBLEMA BEN NAG IINVOKE KAHIT DELETE NA BUTTON YUNG KINICLICK
                     var barcode_value = $(this).closest('tr').children('td:eq(0)').text();
                     var serial_value = $(this).closest('tr').children('td:eq(1)').text();
                     var appliances_value = $(this).closest('tr').children('td:eq(2)').text();
