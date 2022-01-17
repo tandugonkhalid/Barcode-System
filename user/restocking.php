@@ -68,24 +68,24 @@
                                     <div class="p-1">
                                         <input type="text" class="form-control" name="desc" required>
                                     </div>
-                                    <div class="p-2">
+                                    <!-- <div class="p-2">
                                         <label class="form-check-label" for="">House type</label>
-                                    </div>
-                                    <select class="form-control form-control-sm p-1 w-100 dropdown" name="type">
+                                    </div> -->
+                                    <!-- <select class="form-control form-control-sm p-1 w-100 dropdown" name="type"> -->
                                         <!-- POPULATE DATA FROM TYPE TABLE -->
                                     <?php
-                                        include("../db/dbconn.php");
+                                        // include("../db/dbconn.php");
 
-                                        $sql = "Select * from type";
-                                        $result = mysqli_query($dbconn, $sql);
-                                        $number_of_results = mysqli_num_rows($result);
+                                        // $sql = "Select * from type";
+                                        // $result = mysqli_query($dbconn, $sql);
+                                        // $number_of_results = mysqli_num_rows($result);
 
-                                        while ($row = mysqli_fetch_array($result)) {
-                                            echo "<option name=".$row['house_type'].">".$row['house_type']."</option>";
-                                        }
-                                        mysqli_close($dbconn);
+                                        // while ($row = mysqli_fetch_array($result)) {
+                                        //     echo "<option name=".$row['house_type'].">".$row['house_type']."</option>";
+                                        // }
+                                        // mysqli_close($dbconn);
                                     ?>
-                                    </select>
+                                    <!-- </select> -->
                                     <div class="p-2">
                                         <label class="form-check-label" for="">Date Received</label>
                                     </div>
@@ -123,7 +123,7 @@
                                         $number_of_results = mysqli_num_rows($result);
 
                                         while ($row = mysqli_fetch_array($result)) {
-                                            echo "<option name=".$row['EMAIL'].">".$row['EMAIL']."</option>";
+                                            echo "<option value=".$row['ACCOUNT_ID'].">".$row['EMAIL']."</option>";
                                         }
                                         mysqli_close($dbconn);
                                     ?>
@@ -149,7 +149,7 @@
                 $barcode = $_POST['barcode'];
                 $serial = $_POST['serial_no'];
                 $desc = $_POST['desc'];
-                $type = $_POST['type'];
+                // $type = $_POST['type'];
                 $date_received = $_POST['date_received'];
                 $invoice = $_POST['invoice'];
                 $warranty = $_POST['warranty'];
@@ -157,8 +157,8 @@
                 $users = $_POST['users'];
 
                 // INSERT QUERY
-                $sql = "insert into inventory (barcode_number,serial_no,appliances,type,date,invoice_no,warranty_date,quantity,user) 
-                values('$barcode','$serial','$desc','$type','$date_received','$invoice','$warranty'
+                $sql = "insert into inventory (barcode_number,serial_no,appliances,date,invoice_no,warranty_date,quantity,user) 
+                values('$barcode','$serial','$desc','$date_received','$invoice','$warranty'
                 ,'$quantity','$users')";
                 if (mysqli_query($dbconn, $sql)) {
                     // echo "inserted successfully";
@@ -177,7 +177,6 @@
                     <th>Barcode number</th>
                     <th>Serial No.</th>
                     <th>Description</th>
-                    <th>Type</th>
                     <th>Date received</th>
                     <th>Invoice Number</th>
                     <th>Warranty date</th>
@@ -192,7 +191,7 @@
                     include("../db/dbconn.php");
 
                     // SELECT QUERY
-                    $sql = "Select barcode_number,serial_no,appliances,type,date,invoice_no,warranty_date,quantity,account.email,account.account_id 
+                    $sql = "Select barcode_number,serial_no,appliances,date,invoice_no,warranty_date,quantity,account.email,account.account_id 
                     from inventory left join account on inventory.user=account.account_id";
                     $result = mysqli_query($dbconn, $sql);
                     $number_of_results = mysqli_num_rows($result);
@@ -201,7 +200,6 @@
                         echo "<tr><td class=row_".$row['barcode_number'].">".$row['barcode_number']."</td>
                         <td class='serial'>".$row['serial_no']."</td>
                         <td>".$row['appliances']."</td>
-                        <td>".$row['type']."</td>
                         <td>".$row['date']."</td>
                         <td>".$row['invoice_no']."</td>
                         <td>".$row['warranty_date']."</td>
@@ -217,32 +215,33 @@
 
                 <!-- JQUERY TO GET DATA FROM SELECTED ROW TO MODAL -->
                 <script>
-                    $(".btn_edit").click(function(){ 
+                    $(document).ready(function(){
+                        $(".btn_edit").click(function(){ 
 
-                    // CODE FOR GETTING DATA OF SELECTED ROW TO MODAL
-                    // DITO ATA YUNG MAY PROBLEMA BEN NAG IINVOKE KAHIT DELETE NA BUTTON YUNG KINICLICK
-                    var barcode_value = $(this).closest('tr').children('td:eq(0)').text();
-                    var serial_value = $(this).closest('tr').children('td:eq(1)').text();
-                    var appliances_value = $(this).closest('tr').children('td:eq(2)').text();
-                    var type_value = $(this).closest('tr').children('td:eq(3)').text();
-                    var date_value = $(this).closest('tr').children('td:eq(4)').text();
-                    var invoice_value = $(this).closest('tr').children('td:eq(5)').text();
-                    var warranty_value = $(this).closest('tr').children('td:eq(6)').text();
-                    var quantity_value = $(this).closest('tr').children('td:eq(7)').text();
-                    var user_value = $(this).closest('tr').children('td:eq(8)').text();
-                    var account_value = $(this).closest('tr').children('td:eq(9)').text();
+                        // CODE FOR GETTING DATA OF SELECTED ROW TO MODAL
+                        var barcode_value = $(this).closest('tr').children('td:eq(0)').text();
+                        var serial_value = $(this).closest('tr').children('td:eq(1)').text();
+                        var appliances_value = $(this).closest('tr').children('td:eq(2)').text();
+                        // var type_value = $(this).closest('tr').children('td:eq(3)').text();
+                        var date_value = $(this).closest('tr').children('td:eq(3)').text();
+                        var invoice_value = $(this).closest('tr').children('td:eq(4)').text();
+                        var warranty_value = $(this).closest('tr').children('td:eq(5)').text();
+                        var quantity_value = $(this).closest('tr').children('td:eq(6)').text();
+                        var user_value = $(this).closest('tr').children('td:eq(7)').text();
+                        var account_value = $(this).closest('tr').children('td:eq(8)').text();
 
-                    // CODE FOR POPULATING INPUT VALUE WITH DATA FROM SELECTED ROW IN TABLE
-                    document.getElementById('barcode').value = barcode_value;
-                    document.getElementById('serial').value = serial_value;
-                    document.getElementById('appliance').value = appliances_value;
-                    document.getElementById('type').value = type_value;
-                    document.getElementById('date').value = date_value;
-                    document.getElementById('invoice').value = invoice_value;
-                    document.getElementById('warranty').value = warranty_value;
-                    document.getElementById('quantity').value = quantity_value;
-                    document.getElementById('user').value = user_value;
-                    // document.getElementById('account').value = account_value;
+                        // CODE FOR POPULATING INPUT VALUE WITH DATA FROM SELECTED ROW IN TABLE
+                        document.getElementById('barcode').value = barcode_value;
+                        document.getElementById('serial').value = serial_value;
+                        document.getElementById('appliance').value = appliances_value;
+                        // document.getElementById('type').value = type_value;
+                        document.getElementById('date').value = date_value;
+                        document.getElementById('invoice').value = invoice_value;
+                        document.getElementById('warranty').value = warranty_value;
+                        document.getElementById('quantity').value = quantity_value;
+                        document.getElementById('user').value = user_value;
+                        // document.getElementById('account').value = account_value;
+                        });
                     });
                 </script>
 
@@ -276,25 +275,25 @@
                                     <div class="p-1">
                                         <input type="text" class="form-control" name="desc_value" id="appliance" required>
                                     </div>
-                                    <div class="p-2">
+                                    <!-- <div class="p-2">
                                         <label class="form-check-label" for="">House type</label>
-                                    </div>
-                                    <select class="form-control form-control-sm p-1 w-100 dropdown" name="type_value" id="type">
+                                    </div> -->
+                                    <!-- <select class="form-control form-control-sm p-1 w-100 dropdown" name="type_value" id="type"> -->
                                         <!-- POPULATE DATA FROM TYPE TABLE -->
                                     <?php
-                                        include("../db/dbconn.php");
+                                        // include("../db/dbconn.php");
 
-                                        $sql = "Select * from type";
-                                        $result = mysqli_query($dbconn, $sql);
-                                        $number_of_results = mysqli_num_rows($result);
+                                        // $sql = "Select * from type";
+                                        // $result = mysqli_query($dbconn, $sql);
+                                        // $number_of_results = mysqli_num_rows($result);
 
-                                        while ($row = mysqli_fetch_array($result)) {
-                                            echo "<option name=".$row['house_type'].">".$row['house_type']."</option>";
-                                        }
+                                        // while ($row = mysqli_fetch_array($result)) {
+                                        //     echo "<option name=".$row['house_type'].">".$row['house_type']."</option>";
+                                        // }
 
-                                        mysqli_close($dbconn);
+                                        // mysqli_close($dbconn);
                                     ?>
-                                    </select>
+                                    <!-- </select> -->
                                     <div class="p-2">
                                         <label class="form-check-label" for="">Date Received</label>
                                     </div>
@@ -323,7 +322,7 @@
                                         <label class="form-check-label" for="">Received by</label>
                                     </div>
                                     <select class="form-control form-control-sm p-1" name="users_value" id="user">
-                                    <!-- POPULATE DATA FROM ACCOUNT TABLE -->
+                                        <!-- POPULATE DATA FROM ACCOUNT TABLE -->
                                     <?php
                                         include("../db/dbconn.php");
 
@@ -343,7 +342,7 @@
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <input type="submit" class="btn btn-primary" value="Save changes"></input>
+                                <input type="submit" class="btn btn-primary" value="Save changes" name="edit_modal_btn"></input>
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                             </div>
                         </form>
@@ -357,11 +356,11 @@
                 include("../db/dbconn.php");
                 
                 // CHECK IF INPUT IS ALREADY SET
-                if (isset($_POST['barcode_value'])) {
+                if (isset($_POST['edit_modal_btn'])) {
                     $barcode = $_POST['barcode_value'];
                     $serial = $_POST['serial_value'];
                     $desc = $_POST['desc_value'];
-                    $type = $_POST['type_value'];
+                    // $type = $_POST['type_value'];
                     $date_received = $_POST['date_value'];
                     $invoice = $_POST['invoice_value'];
                     $warranty = $_POST['warranty_value'];
@@ -370,7 +369,7 @@
                     // $account = $_POST['account_value'];
 
                     // UPDATE QUERY
-                    $sql = "update inventory set serial_no='$serial', appliances='$desc', type='$type', 
+                    $sql = "update inventory set serial_no='$serial', appliances='$desc', 
                     date='$date_received', invoice_no='$invoice', warranty_date='$warranty', quantity='$quantity', user='$users' WHERE barcode_number = '$barcode'";
                     if (mysqli_query($dbconn, $sql)) {
                         // echo "updated successfully";
