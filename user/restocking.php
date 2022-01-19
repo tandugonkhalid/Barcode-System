@@ -90,13 +90,13 @@
                                         <label class="form-check-label" for="">Date Received</label>
                                     </div>
                                     <div class="p-1">
-                                        <input type="date" class="form-control" name="date_received" required>
+                                        <input type="date" class="form-control" name="date_received" id="date_received" required>
                                     </div>
                                     <div class="p-2">
                                         <label class="form-check-label" for="">Warranty date</label>
                                     </div>
                                     <div class="p-1">
-                                        <input type="date" class="form-control" name="warranty" required>
+                                        <input type="date" class="form-control" name="warranty" id="warranty_date" required>
                                     </div>
                                     <div class="p-2">
                                         <label class="form-check-label" for="">Invoice Number</label>
@@ -108,7 +108,7 @@
                                         <label class="form-check-label" for="">Quantity</label>
                                     </div>
                                     <div class="p-1">
-                                        <input type="text" class="form-control" name="quantity" required>
+                                        <input type="text" class="form-control" name="quantity" value="1" disabled>
                                     </div>
                                     <div class="p-2">
                                         <label class="form-check-label" for="">Received by</label>
@@ -138,6 +138,25 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Script for disabling to pick previous dates -->
+            <script>
+                $(function(){
+                    var dtToday = new Date();
+    
+                    var month = dtToday.getMonth() + 1;
+                    var day = dtToday.getDate();
+                    var year = dtToday.getFullYear();
+                    if(month < 10)
+                        month = '0' + month.toString();
+                    if(day < 10)
+                        day = '0' + day.toString();
+    
+                    var maxDate = year + '-' + month + '-' + day;
+                    $('#date_received').attr('min', maxDate);
+                    $('#warranty_date').attr('min', maxDate);
+                });
+            </script>
 
             <!-- SQL QUERY -->
           <?php
@@ -240,6 +259,7 @@
                         document.getElementById('warranty').value = warranty_value;
                         document.getElementById('quantity').value = quantity_value;
                         document.getElementById('user').value = user_value;
+                        console.log(quantity_value+" "+user_value);
                         // document.getElementById('account').value = account_value;
                         });
                     });
@@ -316,7 +336,7 @@
                                         <label class="form-check-label" for="">Quantity</label>
                                     </div>
                                     <div class="p-1">
-                                        <input type="text" class="form-control" name="quantity_value" id="quantity" required>
+                                        <input type="text" class="form-control" name="quantity_value" id="quantity" disabled>
                                     </div>
                                     <div class="p-2">
                                         <label class="form-check-label" for="">Received by</label>
@@ -368,15 +388,17 @@
                     $users = $_POST['users_value'];
                     // $account = $_POST['account_value'];
 
+                    echo $quantity." ".$users;
+
                     // UPDATE QUERY
-                    $sql = "update inventory set serial_no='$serial', appliances='$desc', 
-                    date='$date_received', invoice_no='$invoice', warranty_date='$warranty', quantity='$quantity', user='$users' WHERE barcode_number = '$barcode'";
-                    if (mysqli_query($dbconn, $sql)) {
-                        // echo "updated successfully";
-                        echo "<meta http-equiv='refresh' content='0'>";
-                    } else {
-                        echo "ERROR: Could not able to execute $sql. " . mysqli_error($dbconn);
-                    }
+                    // $sql = "update inventory set serial_no='$serial', appliances='$desc', 
+                    // date='$date_received', invoice_no='$invoice', warranty_date='$warranty', quantity='$quantity', user='$users' WHERE barcode_number = '$barcode'";
+                    // if (mysqli_query($dbconn, $sql)) {
+                    //     // echo "updated successfully";
+                    //     echo "<meta http-equiv='refresh' content='0'>";
+                    // } else {
+                    //     echo "ERROR: Could not able to execute $sql. " . mysqli_error($dbconn);
+                    // }
                     // echo $type." ".$users." ".$account;
                 }
                 mysqli_close($dbconn);
