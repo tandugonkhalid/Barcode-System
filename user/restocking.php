@@ -108,7 +108,7 @@
                                         <label class="form-check-label" for="">Quantity</label>
                                     </div>
                                     <div class="p-1">
-                                        <input type="text" class="form-control" name="quantity" value="1" disabled>
+                                        <input type="text" class="form-control" name="quantity">
                                     </div>
                                     <div class="p-2">
                                         <label class="form-check-label" for="">Received by</label>
@@ -187,9 +187,8 @@
             }
             mysqli_close($dbconn);
           ?>
-
-        <!-- TABLE FOR INVENTORY -->
         </div>
+        <!-- TABLE FOR INVENTORY -->
             <div>
                 <table id="customers">
                     <tr>
@@ -259,7 +258,6 @@
                         document.getElementById('warranty').value = warranty_value;
                         document.getElementById('quantity').value = quantity_value;
                         document.getElementById('user').value = user_value;
-                        console.log(quantity_value+" "+user_value);
                         // document.getElementById('account').value = account_value;
                         });
                     });
@@ -336,7 +334,7 @@
                                         <label class="form-check-label" for="">Quantity</label>
                                     </div>
                                     <div class="p-1">
-                                        <input type="text" class="form-control" name="quantity_value" id="quantity" disabled>
+                                        <input type="text" class="form-control" name="quantity_value" id="quantity">
                                     </div>
                                     <div class="p-2">
                                         <label class="form-check-label" for="">Received by</label>
@@ -388,18 +386,18 @@
                     $users = $_POST['users_value'];
                     // $account = $_POST['account_value'];
 
-                    echo $quantity." ".$users;
+                    echo "Quantity: ".$quantity." User: ".$users." Warranty: ".$warranty;
 
                     // UPDATE QUERY
-                    // $sql = "update inventory set serial_no='$serial', appliances='$desc', 
-                    // date='$date_received', invoice_no='$invoice', warranty_date='$warranty', quantity='$quantity', user='$users' WHERE barcode_number = '$barcode'";
-                    // if (mysqli_query($dbconn, $sql)) {
-                    //     // echo "updated successfully";
-                    //     echo "<meta http-equiv='refresh' content='0'>";
-                    // } else {
-                    //     echo "ERROR: Could not able to execute $sql. " . mysqli_error($dbconn);
-                    // }
-                    // echo $type." ".$users." ".$account;
+                    $sql = "update inventory set serial_no='$serial', appliances='$desc', 
+                    date='$date_received', invoice_no='$invoice', warranty_date='$warranty', quantity='$quantity', user='$users' WHERE barcode_number = '$barcode'";
+                    if (mysqli_query($dbconn, $sql)) {
+                        // echo "updated successfully";
+                        echo "<meta http-equiv='refresh' content='0'>";
+                    } else {
+                        echo "ERROR: Could not able to execute $sql. " . mysqli_error($dbconn);
+                    }
+                    echo $type." ".$users." ".$account;
                 }
                 mysqli_close($dbconn);
                 ?>
