@@ -49,7 +49,8 @@
             $results_per_page = 15;
 
             // SELECT QUERY
-            $sql = "Select * from inventory";
+            // $sql = "Select appliances, count(quantity) from inventory";
+            $sql = "Select appliances, count(*) as quantity from inventory group by appliances";
             $result = mysqli_query($dbconn, $sql);
             $number_of_results = mysqli_num_rows($result);
 

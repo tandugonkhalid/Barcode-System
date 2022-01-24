@@ -397,6 +397,7 @@
                     } else {
                         echo "ERROR: Could not able to execute $sql. " . mysqli_error($dbconn);
                     }
+                    echo $type." ".$users." ".$account;
                 }
                 mysqli_close($dbconn);
                 ?>
