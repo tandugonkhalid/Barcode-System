@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 14, 2022 at 08:20 PM
+-- Generation Time: Jan 25, 2022 at 09:01 PM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 8.0.14
 
@@ -456,11 +456,11 @@ CREATE TABLE `inventory` (
   `barcode_number` int(5) NOT NULL,
   `serial_no` int(5) NOT NULL,
   `appliances` varchar(255) NOT NULL,
-  `type` varchar(255) NOT NULL,
   `date` date NOT NULL,
   `invoice_no` varchar(255) NOT NULL,
   `warranty_date` date NOT NULL,
   `quantity` int(5) NOT NULL,
+  `Status` varchar(255) NOT NULL,
   `user` int(5) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -468,15 +468,50 @@ CREATE TABLE `inventory` (
 -- Dumping data for table `inventory`
 --
 
-INSERT INTO `inventory` (`barcode_number`, `serial_no`, `appliances`, `type`, `date`, `invoice_no`, `warranty_date`, `quantity`, `user`) VALUES
-(1, 9876, 'Dishwasher', 'F', '2022-01-25', '4321', '2022-04-30', 50, 0),
-(2, 12345, 'Washing Machine', 'A', '2022-01-19', '12334', '2021-12-29', 5, 0),
-(3, 15689, 'Oven', 'B', '2022-01-11', '567890', '2022-11-24', 25, 0),
-(4, 123456, 'Refrigerator', 'B', '2021-12-30', '0497', '2026-12-30', 14, 2),
-(5, 1234324, 'tv', 'A', '0000-00-00', '1234', '0000-00-00', 100, 2),
-(6, 7896789, 'Refrigerator', 'A', '2022-01-27', '14949', '2022-04-01', 50, 0),
-(7, 21432314, 'Dryer', 'A', '2022-02-01', '18247128', '2022-04-28', 15, 0),
-(1231243, 3123123, 'Oven Top', 'A', '2022-01-19', '1234134', '2022-02-05', 50, 0);
+INSERT INTO `inventory` (`barcode_number`, `serial_no`, `appliances`, `date`, `invoice_no`, `warranty_date`, `quantity`, `Status`, `user`) VALUES
+(1, 12345, 'Washing Machine', '2022-01-28', '12334', '2022-04-22', 1, 'Requested', 2),
+(2, 15689, 'Refrigerator', '2022-01-20', '14949', '2022-05-30', 1, 'Available', 1),
+(3, 7896789, 'Refrigerator', '2022-01-20', '4321', '2022-04-30', 1, 'Available', 2),
+(4, 12345, 'Dryer', '2022-01-31', '12334', '2022-04-30', 1, 'Available', 2),
+(5, 15689, 'Dishwasher', '2022-01-31', '12334', '2022-04-30', 1, 'Requested', 1),
+(6, 3123123, 'Washing Machine', '2022-01-31', '12334', '2022-01-31', 1, 'Available', 1),
+(7, 12345, 'Dishwasher', '2022-01-31', '567890', '2022-01-31', 1, 'Available', 2);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `request`
+--
+
+CREATE TABLE `request` (
+  `request_id` int(5) NOT NULL,
+  `srf` varchar(255) NOT NULL,
+  `location` varchar(255) NOT NULL,
+  `next_location` varchar(255) NOT NULL,
+  `inventory_id` int(5) NOT NULL,
+  `moved_date` varchar(255) NOT NULL,
+  `requested_by` varchar(5) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `request`
+--
+
+INSERT INTO `request` (`request_id`, `srf`, `location`, `next_location`, `inventory_id`, `moved_date`, `requested_by`) VALUES
+(4, '00114', 'Sky Avenue # 3', '', 1, '2022-01-31', 'Rizwa'),
+(7, '00022', 'Kingdom ave. #23', '', 5, '2022-01-31', 'Rizwa');
+
+--
+-- Triggers `request`
+--
+DELIMITER $$
+CREATE TRIGGER `statusUpdate` AFTER UPDATE ON `request` FOR EACH ROW begin
+update inventory
+set status = "Requested"
+where barcode_number = new.inventory_id;
+end
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -521,7 +556,15 @@ ALTER TABLE `houses`
 -- Indexes for table `inventory`
 --
 ALTER TABLE `inventory`
-  ADD PRIMARY KEY (`barcode_number`);
+  ADD PRIMARY KEY (`barcode_number`),
+  ADD KEY `user` (`user`);
+
+--
+-- Indexes for table `request`
+--
+ALTER TABLE `request`
+  ADD PRIMARY KEY (`request_id`),
+  ADD KEY `inventory_id` (`inventory_id`);
 
 --
 -- Indexes for table `type`
@@ -552,10 +595,32 @@ ALTER TABLE `inventory`
   MODIFY `barcode_number` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1231244;
 
 --
+-- AUTO_INCREMENT for table `request`
+--
+ALTER TABLE `request`
+  MODIFY `request_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
 -- AUTO_INCREMENT for table `type`
 --
 ALTER TABLE `type`
   MODIFY `type_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `inventory`
+--
+ALTER TABLE `inventory`
+  ADD CONSTRAINT `inventory_ibfk_1` FOREIGN KEY (`user`) REFERENCES `account` (`ACCOUNT_ID`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Constraints for table `request`
+--
+ALTER TABLE `request`
+  ADD CONSTRAINT `request_ibfk_1` FOREIGN KEY (`inventory_id`) REFERENCES `inventory` (`barcode_number`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -31,7 +31,7 @@
             <a href="../index.php" class="logout text-white">logout</a>
         </nav>
         <!-- END OF NAVBAR -->
-        <!-- START OF MODAL -->
+        <!-- START OF ADD MODAL -->
         <div class="p-5 col-10">
             <div class="column-content-header">
                 <!-- TRIGGER MODAL POPUP -->
@@ -39,7 +39,7 @@
                     Add item
                 </button>
           
-                <!-- MODAL POPUP -->
+                <!-- ADD MODAL POPUP -->
                 <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered" role="document">
                         <div class="modal-content">
@@ -176,9 +176,9 @@
                 $users = $_POST['users'];
 
                 // INSERT QUERY
-                $sql = "insert into inventory (barcode_number,serial_no,appliances,date,invoice_no,warranty_date,quantity,user) 
+                $sql = "insert into inventory (barcode_number,serial_no,appliances,date,invoice_no,warranty_date,quantity,status,user) 
                 values('$barcode','$serial','$desc','$date_received','$invoice','$warranty'
-                ,'$quantity','$users')";
+                ,'$quantity','Available','$users')";
                 if (mysqli_query($dbconn, $sql)) {
                     // echo "inserted successfully";
                 } else {

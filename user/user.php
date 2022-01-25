@@ -50,7 +50,7 @@
 
             // SELECT QUERY
             // $sql = "Select appliances, count(quantity) from inventory";
-            $sql = "Select appliances, count(*) as quantity from inventory group by appliances";
+            $sql = "Select appliances, count(*) as quantity from inventory where status = 'Available' group by appliances";
             $result = mysqli_query($dbconn, $sql);
             $number_of_results = mysqli_num_rows($result);
 
