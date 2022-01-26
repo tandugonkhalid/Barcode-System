@@ -188,8 +188,8 @@
             mysqli_close($dbconn);
           ?>
         </div>
-        <!-- TABLE FOR INVENTORY -->
-            <div>
+            <!-- TABLE FOR INVENTORY -->
+            <div id="printableArea">
                 <table id="customers">
                     <tr>
                     <th>Barcode number</th>
@@ -207,10 +207,24 @@
                     <?php
                     // DATABASE CONNECTION
                     include("../db/dbconn.php");
+                    $results_per_page = 15;
+            
+                    // NUMBER OF PAGES DIVIDED WITH NUMBER OF DATA IN ONE PAGE
+                    $number_of_pages = ceil($number_of_results/$results_per_page);
+            
+                    // IF PAGE SELECTED IS SET
+                    if(!isset($_GET['page'])){
+                        $page = 1;
+                    }else{
+                        $page = $_GET['page'];
+                    }
+            
+                    // LIMITER FOR PAGE SELECTED
+                    $this_page_first_result = ($page-1)*$results_per_page;
 
                     // SELECT QUERY
-                    $sql = "Select barcode_number,serial_no,appliances,date,invoice_no,warranty_date,quantity,account.email,account.account_id 
-                    from inventory left join account on inventory.user=account.account_id";
+                    $sql = "SELECT barcode_number,serial_no,appliances,date,invoice_no,warranty_date,quantity,account.email,account.account_id 
+                    FROM inventory LEFT JOIN account ON inventory.user=account.account_id LIMIT ".$this_page_first_result.",".$results_per_page;
                     $result = mysqli_query($dbconn, $sql);
                     $number_of_results = mysqli_num_rows($result);
 
@@ -227,10 +241,11 @@
                         <td><button class='btn btn-primary btn_edit' data-toggle='modal' data-target='#editmodal' id='editbtn'>Edit</button>
                         <button class='btn btn-danger btn_delete' data-toggle='modal' data-target='#deletemodal'>Delete</button></td></tr>";
                     }
+                    $Previous = $page-1;
+                    $Next = $page+1;
                     mysqli_close($dbconn);
                     ?>
                 </table>
-
                 <!-- JQUERY TO GET DATA FROM SELECTED ROW TO MODAL -->
                 <script>
                     $(document).ready(function(){
@@ -260,18 +275,94 @@
                         document.getElementById('user').value = user_value;
                         // document.getElementById('account').value = account_value;
                         });
+
+                        $(".print").click(function(){
+                            var divContents = document.getElementById("printableArea").innerHTML;
+                            var a = window.open('', '', 'height=500, width=500');
+                            a.document.write('<html>');
+                            a.document.write('<body> <br>');
+                            a.document.write(divContents);
+                            a.document.write('</body></html>');
+                            a.document.close();
+                            a.print();
+                        });
+                        
                     });
                 </script>
 
-                <!-- START OF EDIT MODAL -->
-                <div class="modal fade" id="editmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLongTitle">Edit</h5>
-                                <button type="button" class="btn-close" aria-label="Close" data-dismiss="modal"></button>
-                                </button>
-                            </div>
+                <!-- SQL QUERY -->
+                <?php
+                //DATABASE CONNECTION
+                include("../db/dbconn.php");
+                
+                // CHECK IF INPUT IS ALREADY SET
+                if (isset($_POST['edit_modal_btn'])) {
+                    $barcode = $_POST['barcode_value'];
+                    $serial = $_POST['serial_value'];
+                    $desc = $_POST['desc_value'];
+                    // $type = $_POST['type_value'];
+                    $date_received = $_POST['date_value'];
+                    $invoice = $_POST['invoice_value'];
+                    $warranty = $_POST['warranty_value'];
+                    $quantity = $_POST['quantity_value'];
+                    $users = $_POST['users_value'];
+                    // $account = $_POST['account_value'];
+
+                    echo "Quantity: ".$quantity." User: ".$users." Warranty: ".$warranty;
+
+                    // UPDATE QUERY
+                    $sql = "update inventory set serial_no='$serial', appliances='$desc', 
+                    date='$date_received', invoice_no='$invoice', warranty_date='$warranty', quantity='$quantity', user='$users' WHERE barcode_number = '$barcode'";
+                    if (mysqli_query($dbconn, $sql)) {
+                        // echo "updated successfully";
+                        echo "<meta http-equiv='refresh' content='0'>";
+                    } else {
+                        echo "ERROR: Could not able to execute $sql. " . mysqli_error($dbconn);
+                    }
+                    echo $type." ".$users." ".$account;
+                }
+                mysqli_close($dbconn);
+                ?>
+                <!-- END OF EDIT MODAL -->
+                <script>
+                    $('.btn_delete').click(function(){
+                        var barcode_value = $(this).closest('tr').children('td:eq(0)').text();
+                        document.getElementById('barcode_num').value = barcode_value;
+                    });
+                </script>
+            </div>
+            
+            <div>
+                <button class="btn btn-primary m-3 print">Print Me!</button>
+            </div>
+
+            <nav aria-label="Page navigation example" class="pagination">
+                <ul class="pagination">
+                    <li class="page-item">
+                        <a href="restocking.php?page=<?=$Previous;?>" class="page-link">Previous</a>
+                    </li>
+                <?php
+                // DISPLAY THE NUMBER OF PAGES WITH PAGE LINK
+                    for($page=1; $page<=$number_of_pages; $page++){
+                        echo    '<li class="page-item">
+                                <a class="page-link" href="restocking.php?page='.$page.'">'.$page.'</a>
+                            </li>';
+                    }
+                ?>
+                        <li class="page-item">
+                            <a href="restocking.php?page=<?=$Next;?>" class="page-link">Next</a>
+                        </li>
+                    </ul>
+            </nav>
+
+            <!-- START OF EDIT MODAL -->
+            <div class="modal fade" id="editmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">Edit</h5>
+                            <button type="button" class="btn-close" aria-label="Close" data-dismiss="modal"></button>
+                        </div>
                         <form method="post" action="restocking.php">
                             <div class="modal-body">
                                 <div class="form-group">
@@ -294,7 +385,7 @@
                                         <input type="text" class="form-control" name="desc_value" id="appliance" required>
                                     </div>
                                     <!-- <div class="p-2">
-                                        <label class="form-check-label" for="">House type</label>
+                                    <label class="form-check-label" for="">House type</label>
                                     </div> -->
                                     <!-- <select class="form-control form-control-sm p-1 w-100 dropdown" name="type_value" id="type"> -->
                                         <!-- POPULATE DATA FROM TYPE TABLE -->
@@ -340,7 +431,7 @@
                                         <label class="form-check-label" for="">Received by</label>
                                     </div>
                                     <select class="form-control form-control-sm p-1" name="users_value" id="user">
-                                        <!-- POPULATE DATA FROM ACCOUNT TABLE -->
+                                    <!-- POPULATE DATA FROM ACCOUNT TABLE -->
                                     <?php
                                         include("../db/dbconn.php");
 
@@ -364,52 +455,12 @@
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                             </div>
                         </form>
-                        </div>
                     </div>
                 </div>
+            </div>
 
-                <!-- SQL QUERY -->
-                <?php
-                //DATABASE CONNECTION
-                include("../db/dbconn.php");
-                
-                // CHECK IF INPUT IS ALREADY SET
-                if (isset($_POST['edit_modal_btn'])) {
-                    $barcode = $_POST['barcode_value'];
-                    $serial = $_POST['serial_value'];
-                    $desc = $_POST['desc_value'];
-                    // $type = $_POST['type_value'];
-                    $date_received = $_POST['date_value'];
-                    $invoice = $_POST['invoice_value'];
-                    $warranty = $_POST['warranty_value'];
-                    $quantity = $_POST['quantity_value'];
-                    $users = $_POST['users_value'];
-                    // $account = $_POST['account_value'];
-
-                    echo "Quantity: ".$quantity." User: ".$users." Warranty: ".$warranty;
-
-                    // UPDATE QUERY
-                    $sql = "update inventory set serial_no='$serial', appliances='$desc', 
-                    date='$date_received', invoice_no='$invoice', warranty_date='$warranty', quantity='$quantity', user='$users' WHERE barcode_number = '$barcode'";
-                    if (mysqli_query($dbconn, $sql)) {
-                        // echo "updated successfully";
-                        echo "<meta http-equiv='refresh' content='0'>";
-                    } else {
-                        echo "ERROR: Could not able to execute $sql. " . mysqli_error($dbconn);
-                    }
-                    echo $type." ".$users." ".$account;
-                }
-                mysqli_close($dbconn);
-                ?>
-                <!-- END OF EDIT MODAL -->
-                <script>
-                    $('.btn_delete').click(function(){
-                        var barcode_value = $(this).closest('tr').children('td:eq(0)').text();
-                        document.getElementById('barcode_num').value = barcode_value;
-                    });
-                </script>
-                <!-- START OF DELETE MODAL -->
-                <div class="modal fade" id="deletemodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <!-- START OF DELETE MODAL -->
+            <div class="modal fade" id="deletemodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -446,9 +497,8 @@
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-        <!-- END OF MODAL POPUP -->
+        
+            <!-- END OF MODAL POPUP -->
     </div>
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>

@@ -56,14 +56,6 @@
             $sql = "Select * from houses";
             $result = mysqli_query($dbconn, $sql);
             $number_of_results = mysqli_num_rows($result);
-
-            // while($row = mysqli_fetch_array($result)){
-            //     echo "<tr><td>".$row['house_id']."</td>";
-            //     echo "<td>".$row['villa_no']."</td>";
-            //     echo "<td>".$row['house_type']."</td></tr>";
-            // }
-
-
             
             // NUMBER OF PAGES DIVIDED WITH NUMBER OF DATA IN ONE PAGE
             $number_of_pages = ceil($number_of_results/$results_per_page);
@@ -74,6 +66,7 @@
             }else{
                 $page = $_GET['page'];
             }
+            
             
             // LIMITER FOR PAGE SELECTED
             $this_page_first_result = ($page-1)*$results_per_page;
@@ -103,7 +96,7 @@
         // DISPLAY THE NUMBER OF PAGES WITH PAGE LINK
             for($page=1; $page<=$number_of_pages; $page++){
                 echo    '<li class="page-item">
-                            <a class="page-link" href="admin.php?page='.$page.'">'.$page.'</a>
+                            <a class="page-link" href="restocking.php?page='.$page.'">'.$page.'</a>
                         </li>';
                             
             }

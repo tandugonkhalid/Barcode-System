@@ -33,96 +33,96 @@
     <!-- END OF NAVBAR -->
     
     <div class="p-5 col-10">
-            <div class="column-content-header">
-                <!-- TRIGGER MODAL POPUP -->
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
-                    Add item
-                </button>
+        <div class="column-content-header">
+            <!-- TRIGGER MODAL POPUP -->
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+                Add item
+            </button>
           
-                <!-- MODAL POPUP -->
-                <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLongTitle">Appliances</h5>
-                                <button type="button" class="btn-close" aria-label="Close" data-dismiss="modal"></button>
+            <!-- MODAL POPUP -->
+            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">Appliances</h5>
+                            <button type="button" class="btn-close" aria-label="Close" data-dismiss="modal"></button>
                         </div>
-                        <form method="post" action="request.php">
+                        <form method="post" action="request.php">   
                             <div class="modal-body">
-                                <div class="form-group">
-                                    <div class="p-2">
-                                        <label class="form-check-label" for="">Request Number</label>
-                                    </div>
-                                    <div class="p-1">
-                                        <input type="text" class="form-control" name="request_number" required>
-                                    </div>
-                                    <div class="p-2">
-                                        <label class="form-check-label" for="">Appliances</label>
-                                    </div>
-                                    <select class="form-control form-control-sm p-1 w-100" name="appliances">
-                                        <!-- POPULATE DATA FROM TYPE TABLE -->
-                                        <?php
-                                        include("../db/dbconn.php");
-
-                                        $sql = "Select barcode_number, appliances from inventory";
-                                        $result = mysqli_query($dbconn, $sql);
-                                        $number_of_results = mysqli_num_rows($result);
-
-                                        while ($row = mysqli_fetch_array($result)) {
-                                            echo "<option value=".$row['barcode_number'].">".$row['appliances']."</option>";
-                                        }
-                                        mysqli_close($dbconn);
-                                    ?>
-                                    </select>
-                                    <div class="p-2">
-                                        <label class="form-check-label" for="">SRF Number</label>
-                                    </div>
-                                    <div class="p-1">
-                                        <input type="text" class="form-control" name="srf" required>
-                                    </div>
-                                    <div class="p-2">
-                                        <label class="form-check-label" for="">Location</label>
-                                    </div>
-                                    <div class="p-1">
-                                        <input type="text" class="form-control" name="location" required>
-                                    </div>
-                                    <div class="p-2">
-                                        <label class="form-check-label" for="">Next location</label>
-                                    </div>
-                                    <div class="p-1">
-                                        <input type="text" class="form-control" name="moved_location">
-                                    </div>
-                                    <div class="p-2">
-                                        <label class="form-check-label" for="">Date</label>
-                                    </div>
-                                    <div class="p-1">
-                                        <input type="date" class="form-control" name="date" required>   
-                                    </div>
-                                    <div class="p-2">
-                                        <label class="form-check-label" for="">Requested by</label>
-                                    </div>
-                                    <div class="p-1">
-                                        <input type="text" class="form-control" name="user_request">
-                                    </div>
-                                    <!-- <div class="p-2">
-                                        <label class="form-check-label" for="">Received by</label>
-                                    </div>
-                                    <select class="form-control form-control-sm p-1" name="users"> -->
-                                        <!-- POPULATE DATA FROM ACCOUNT TABLE -->
-                                    <?php
-                                        // include("../db/dbconn.php");
-
-                                        // $sql = "Select * from account";
-                                        // $result = mysqli_query($dbconn, $sql);
-                                        // $number_of_results = mysqli_num_rows($result);
-
-                                        // while ($row = mysqli_fetch_array($result)) {
-                                        //     echo "<option value=".$row['ACCOUNT_ID'].">".$row['EMAIL']."</option>";
-                                        // }
-                                        // mysqli_close($dbconn);
-                                    ?>
-                                    <!-- </select> -->
+                            <div class="form-group">
+                                <div class="p-2">
+                                    <label class="form-check-label" for="">Request Number</label>
                                 </div>
+                                <div class="p-1">
+                                    <input type="text" class="form-control" name="request_number" required>
+                                </div>
+                                <div class="p-2">
+                                    <label class="form-check-label" for="">Appliances</label>
+                                </div>
+                                <select class="form-control form-control-sm p-1 w-100" name="appliances">
+                                    <!-- POPULATE DATA FROM TYPE TABLE -->
+                                    <?php
+                                    include("../db/dbconn.php");
+
+                                    $sql = "Select barcode_number, appliances from inventory";
+                                    $result = mysqli_query($dbconn, $sql);
+                                    $number_of_results = mysqli_num_rows($result);
+
+                                    while ($row = mysqli_fetch_array($result)) {
+                                        echo "<option value=".$row['barcode_number'].">".$row['appliances']."</option>";
+                                    }
+                                    mysqli_close($dbconn);
+                                ?>
+                                </select>
+                                <div class="p-2">
+                                    <label class="form-check-label" for="">SRF Number</label>
+                                </div>
+                                <div class="p-1">
+                                    <input type="text" class="form-control" name="srf" required>
+                                </div>
+                                <div class="p-2">
+                                    <label class="form-check-label" for="">Location</label>
+                                </div>
+                                <div class="p-1">
+                                    <input type="text" class="form-control" name="location" required>
+                                </div>
+                                <div class="p-2">
+                                    <label class="form-check-label" for="">Next location</label>
+                                </div>
+                                <div class="p-1">
+                                    <input type="text" class="form-control" name="moved_location">
+                                </div>
+                                <div class="p-2">
+                                    <label class="form-check-label" for="">Date</label>
+                                </div>
+                                <div class="p-1">
+                                    <input type="date" class="form-control" name="date" required>   
+                                </div>
+                                <div class="p-2">
+                                    <label class="form-check-label" for="">Requested by</label>
+                                </div>
+                                <div class="p-1">
+                                    <input type="text" class="form-control" name="user_request">
+                                </div>
+                                <!-- <div class="p-2">
+                                    <label class="form-check-label" for="">Received by</label>
+                                </div>
+                                <select class="form-control form-control-sm p-1" name="users"> -->
+                                    <!-- POPULATE DATA FROM ACCOUNT TABLE -->
+                                <?php
+                                    // include("../db/dbconn.php");
+
+                                    // $sql = "Select * from account";
+                                    // $result = mysqli_query($dbconn, $sql);
+                                    // $number_of_results = mysqli_num_rows($result);
+
+                                    // while ($row = mysqli_fetch_array($result)) {
+                                    //     echo "<option value=".$row['ACCOUNT_ID'].">".$row['EMAIL']."</option>";
+                                    // }
+                                    // mysqli_close($dbconn);
+                                ?>
+                                <!-- </select> -->
+                            </div>
                             </div>
                             <div class="modal-footer">
                                 <input type="submit" class="btn btn-primary" value="Save changes"></input>
@@ -184,49 +184,67 @@
 
         <!-- TABLE FOR INVENTORY -->
         <div>
-                <table id="customers">
-                    <tr>
-                    <th>Request Number</th>
-                    <th>Serial No.</th>
-                    <th>Appliance</th>
-                    <th>Srf</th>
-                    <th>Location</th>
-                    <th>Next Location</th>
-                    <th>Moved Date</th>
-                    <th>Warranty Date</th>
-                    <th>Requested By</th>
-                    <th>Approved By</th>
-                    <th>Action</th>
-                    </tr>
+            <table id="customers">
+                <tr>
+                <th>Request Number</th>
+                <th>Serial No.</th>
+                <th>Appliance</th>
+                <th>Srf</th>
+                <th>Location</th>
+                <th>Next Location</th>
+                <th>Moved Date</th>
+                <th>Warranty Date</th>
+                <th>Requested By</th>
+                <th>Approved By</th>
+                <th>Action</th>
+                </tr>
                     
-                    <!-- ADD PHP CODE FOR SELECT QUERY -->
-                    <?php
-                    // DATABASE CONNECTION
-                    include("../db/dbconn.php");
+                <!-- ADD PHP CODE FOR SELECT QUERY -->
+                <?php
+                // DATABASE CONNECTION
+                include("../db/dbconn.php");
 
-                    // SELECT QUERY
-                    $sql = "SELECT request_id, inventory.serial_no ,inventory.appliances , srf, location,next_location, moved_date, inventory.barcode_number, 
-                    inventory.warranty_date ,requested_by, inventory.user FROM request LEFT JOIN inventory on inventory_id=inventory.barcode_number";
-                    $result = mysqli_query($dbconn, $sql);
-                    $number_of_results = mysqli_num_rows($result);
+                $results_per_page = 15;
+            
+                // NUMBER OF PAGES DIVIDED WITH NUMBER OF DATA IN ONE PAGE
+                $number_of_pages = ceil($number_of_results/$results_per_page);
+            
+                // IF PAGE SELECTED IS SET
+                if(!isset($_GET['page'])){
+                    $page = 1;
+                }else{
+                    $page = $_GET['page'];
+                }
+            
+                // LIMITER FOR PAGE SELECTED
+                $this_page_first_result = ($page-1)*$results_per_page;
 
-                    while ($row = mysqli_fetch_array($result)) {
-                        echo "<tr><td class=row_".$row['request_id'].">".$row['request_id']."</td>
-                        <td>".$row['serial_no']."</td>
-                        <td>".$row['appliances']."</td>
-                        <td>".$row['srf']."</td>
-                        <td>".$row['location']."</td>
-                        <td>".$row['next_location']."</td>
-                        <td>".$row['moved_date']."</td>
-                        <td>".$row['warranty_date']."</td>
-                        <td>".$row['requested_by']."</td>
-                        <td>".$row['user']."</td>
-                        <td><button class='btn btn-primary btn_edit' data-toggle='modal' data-target='#editmodal' id='editbtn'>Edit</button>
-                        <button class='btn btn-danger btn_delete' data-toggle='modal' data-target='#deletemodal'>Delete</button></td></tr>";
-                    }
-                    mysqli_close($dbconn);
-                    ?>
-                </table>
+                // SELECT QUERY
+                $sql = "SELECT request_id, inventory.serial_no ,inventory.appliances , srf, location,next_location, moved_date, inventory.barcode_number, 
+                inventory.warranty_date ,requested_by, inventory.user FROM request LEFT JOIN inventory on inventory_id=inventory.barcode_number 
+                LIMIT ".$this_page_first_result.",".$results_per_page;
+                $result = mysqli_query($dbconn, $sql);
+                $number_of_results = mysqli_num_rows($result);
+
+                while ($row = mysqli_fetch_array($result)) {
+                    echo "<tr><td class=row_".$row['request_id'].">".$row['request_id']."</td>
+                    <td>".$row['serial_no']."</td>
+                    <td>".$row['appliances']."</td>
+                    <td>".$row['srf']."</td>
+                    <td>".$row['location']."</td>
+                    <td>".$row['next_location']."</td>
+                    <td>".$row['moved_date']."</td>
+                    <td>".$row['warranty_date']."</td>
+                    <td>".$row['requested_by']."</td>
+                    <td>".$row['user']."</td>
+                    <td><button class='btn btn-primary btn_edit' data-toggle='modal' data-target='#editmodal' id='editbtn'>Edit</button>
+                    <button class='btn btn-danger btn_delete' data-toggle='modal' data-target='#deletemodal'>Delete</button></td></tr>";
+                }
+                $Previous = $page-1;
+                $Next = $page+1;
+                mysqli_close($dbconn);
+                ?>
+            </table>
 
                 <!-- JQUERY TO GET DATA FROM SELECTED ROW TO MODAL -->
                 <script>
@@ -417,7 +435,27 @@
                         </div>
                     </div>
                 </div>
-            </div>
+        </div>
+
+        <nav aria-label="Page navigation example" class="pagination">
+                <ul class="pagination">
+                    <li class="page-item">
+                        <a href="request.php?page=<?=$Previous;?>" class="page-link">Previous</a>
+                    </li>
+                <?php
+                // DISPLAY THE NUMBER OF PAGES WITH PAGE LINK
+                    for($page=1; $page<=$number_of_pages; $page++){
+                        echo    '<li class="page-item">
+                                <a class="page-link" href="request.php?page='.$page.'">'.$page.'</a>
+                            </li>';
+                    }
+                ?>
+                        <li class="page-item">
+                            <a href="request.php?page=<?=$Next;?>" class="page-link">Next</a>
+                        </li>
+                    </ul>
+            </nav>
+    </div>
 </div>
     
 
