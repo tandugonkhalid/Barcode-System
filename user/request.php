@@ -64,7 +64,7 @@
                                     <?php
                                     include("../db/dbconn.php");
 
-                                    $sql = "Select barcode_number, appliances from inventory";
+                                    $sql = "SELECT barcode_number, appliances FROM inventory WHERE Status = 'Available' ORDER BY date";
                                     $result = mysqli_query($dbconn, $sql);
                                     $number_of_results = mysqli_num_rows($result);
 
@@ -96,7 +96,7 @@
                                     <label class="form-check-label" for="">Date</label>
                                 </div>
                                 <div class="p-1">
-                                    <input type="date" class="form-control" name="date" required>   
+                                    <input type="date" class="form-control" name="date" id="date" required>   
                                 </div>
                                 <div class="p-2">
                                     <label class="form-check-label" for="">Requested by</label>
@@ -104,24 +104,6 @@
                                 <div class="p-1">
                                     <input type="text" class="form-control" name="user_request">
                                 </div>
-                                <!-- <div class="p-2">
-                                    <label class="form-check-label" for="">Received by</label>
-                                </div>
-                                <select class="form-control form-control-sm p-1" name="users"> -->
-                                    <!-- POPULATE DATA FROM ACCOUNT TABLE -->
-                                <?php
-                                    // include("../db/dbconn.php");
-
-                                    // $sql = "Select * from account";
-                                    // $result = mysqli_query($dbconn, $sql);
-                                    // $number_of_results = mysqli_num_rows($result);
-
-                                    // while ($row = mysqli_fetch_array($result)) {
-                                    //     echo "<option value=".$row['ACCOUNT_ID'].">".$row['EMAIL']."</option>";
-                                    // }
-                                    // mysqli_close($dbconn);
-                                ?>
-                                <!-- </select> -->
                             </div>
                             </div>
                             <div class="modal-footer">
@@ -169,10 +151,10 @@
                 // $users = $_POST['users'];
 
                 // INSERT QUERY
-                $sql = "insert into request (inventory_id,srf,location,moved_date,requested_by) 
-                values('$appliance','$srf','$location','$date','$user')";
+                $sql = "INSERT INTO request (inventory_id,srf,location,moved_date,requested_by) 
+                VALUES('$appliance','$srf','$location','$date','$user')";
                 if (mysqli_query($dbconn, $sql)) {
-                    // echo "inserted successfully";
+                    echo "<meta http-equiv='refresh' content='0'>";
                 } else {
                     echo "ERROR: Could not able to execute $sql. " . mysqli_error($dbconn);
                 }
@@ -183,7 +165,7 @@
         </div>
 
         <!-- TABLE FOR INVENTORY -->
-        <div>
+        <div id="printableArea">
             <table id="customers">
                 <tr>
                 <th>Request Number</th>
@@ -221,7 +203,7 @@
 
                 // SELECT QUERY
                 $sql = "SELECT request_id, inventory.serial_no ,inventory.appliances , srf, location,next_location, moved_date, inventory.barcode_number, 
-                inventory.warranty_date ,requested_by, inventory.user FROM request LEFT JOIN inventory on inventory_id=inventory.barcode_number 
+                inventory.warranty_date ,requested_by, inventory.user FROM request LEFT JOIN inventory on inventory_id=inventory.barcode_number ORDER BY date 
                 LIMIT ".$this_page_first_result.",".$results_per_page;
                 $result = mysqli_query($dbconn, $sql);
                 $number_of_results = mysqli_num_rows($result);
@@ -244,7 +226,12 @@
                 $Next = $page+1;
                 mysqli_close($dbconn);
                 ?>
-            </table>
+            </table>    
+        </div>
+
+        <div>
+            <button class="btn btn-primary m-3 print">Print Me!</button>
+        </div>
 
                 <!-- JQUERY TO GET DATA FROM SELECTED ROW TO MODAL -->
                 <script>
@@ -273,12 +260,23 @@
                         document.getElementById('location').value = location_value;
                         // document.getElementById('type').value = type_value;
                         document.getElementById('moved_location').value = newloc_value;
-                        document.getElementById('date').value = date_value;
+                        document.getElementById('editdate').value = date_value;
                         document.getElementById('requested').value = req_value;
                         // document.getElementById('quantity').value = quantity_value;
                         // document.getElementById('user').value = user_value;
                         // document.getElementById('account').value = account_value;    
                         });
+                    });
+
+                    $(".print").click(function(){
+                        var divContents = document.getElementById("printableArea").innerHTML;
+                        var a = window.open('', '', 'height=500, width=500');
+                        a.document.write('<html>');
+                        a.document.write('<body> <br>');
+                        a.document.write(divContents);
+                        a.document.write('</body></html>');
+                        a.document.close();
+                        a.print();
                     });
                 </script>
 
@@ -316,7 +314,7 @@
                                         <?php
                                         include("../db/dbconn.php");
 
-                                        $sql = "Select barcode_number, appliances from inventory";
+                                        $sql = "SELECT barcode_number, appliances FROM inventory WHERE Status = 'Requested' ORDER BY date";
                                         $result = mysqli_query($dbconn, $sql);
                                         $number_of_results = mysqli_num_rows($result);
 
@@ -343,7 +341,7 @@
                                         <label class="form-check-label" for="">Date</label>
                                     </div>
                                     <div class="p-1">
-                                        <input type="date" class="form-control" name="date" id="date" required>
+                                        <input type="date" class="form-control" name="date" id="editdate" required>
                                     </div>
                                     <div class="p-2">
                                         <label class="form-check-label" for="">Requested by</label>
@@ -378,7 +376,7 @@
                     $requestor = $_POST['requested'];
                 
                     // UPDATE QUERY
-                    $sql = "update request set srf='$srf', inventory_id='$appliance_id', 
+                    $sql = "UPDATE request SET srf='$srf', inventory_id='$appliance_id', 
                     moved_date='$date', location='$location', next_location='$new_location', requested_by='$requestor' WHERE request_id = '$reqID';";
                     if (mysqli_query($dbconn, $sql)) {
                         // echo "updated successfully";
@@ -421,7 +419,7 @@
                                 include("../db/dbconn.php");
                                     if(isset($_POST['btn_delete'])){
                                         $reqID = $_POST['reqID'];
-                                        $sql = "delete from request WHERE request_id = '$reqID'";
+                                        $sql = "DELETE FROM request WHERE request_id = '$reqID'";
                                             if (mysqli_query($dbconn, $sql)) {
                                                 echo "Deleted successfully";
                                                 echo "<meta http-equiv='refresh' content='0'>";
@@ -435,13 +433,12 @@
                         </div>
                     </div>
                 </div>
-        </div>
 
-        <nav aria-label="Page navigation example" class="pagination">
-                <ul class="pagination">
-                    <li class="page-item">
-                        <a href="request.php?page=<?=$Previous;?>" class="page-link">Previous</a>
-                    </li>
+            <nav aria-label="Page navigation example" class="pagination">
+                    <ul class="pagination">
+                        <li class="page-item">
+                            <a href="request.php?page=<?=$Previous;?>" class="page-link">Previous</a>
+                        </li>
                 <?php
                 // DISPLAY THE NUMBER OF PAGES WITH PAGE LINK
                     for($page=1; $page<=$number_of_pages; $page++){

@@ -180,7 +180,7 @@
                 values('$barcode','$serial','$desc','$date_received','$invoice','$warranty'
                 ,'$quantity','Available','$users')";
                 if (mysqli_query($dbconn, $sql)) {
-                    // echo "inserted successfully";
+                    echo "<meta http-equiv='refresh' content='0'>";
                 } else {
                     echo "ERROR: Could not able to execute $sql. " . mysqli_error($dbconn);
                 }
@@ -199,6 +199,7 @@
                     <th>Invoice Number</th>
                     <th>Warranty date</th>
                     <th>Quantity</th>
+                    <th>Status</th>
                     <th>Received by</th>
                     <th>Action</th>
                     </tr>
@@ -223,8 +224,8 @@
                     $this_page_first_result = ($page-1)*$results_per_page;
 
                     // SELECT QUERY
-                    $sql = "SELECT barcode_number,serial_no,appliances,date,invoice_no,warranty_date,quantity,account.email,account.account_id 
-                    FROM inventory LEFT JOIN account ON inventory.user=account.account_id LIMIT ".$this_page_first_result.",".$results_per_page;
+                    $sql = "SELECT barcode_number,serial_no,appliances,date,invoice_no,warranty_date,quantity,Status,account.email,account.account_id 
+                    FROM inventory LEFT JOIN account ON inventory.user=account.account_id ORDER BY date LIMIT ".$this_page_first_result.",".$results_per_page;
                     $result = mysqli_query($dbconn, $sql);
                     $number_of_results = mysqli_num_rows($result);
 
@@ -236,6 +237,7 @@
                         <td>".$row['invoice_no']."</td>
                         <td>".$row['warranty_date']."</td>
                         <td>".$row['quantity']."</td>
+                        <td>".$row['Status']."</td>
                         <td>".$row['email']."</td>
                         <td style='display:none'>".$row['account_id']."</td>
                         <td><button class='btn btn-primary btn_edit' data-toggle='modal' data-target='#editmodal' id='editbtn'>Edit</button>

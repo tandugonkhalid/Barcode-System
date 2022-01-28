@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 25, 2022 at 09:01 PM
+-- Generation Time: Jan 28, 2022 at 02:02 PM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 8.0.14
 
@@ -470,12 +470,12 @@ CREATE TABLE `inventory` (
 
 INSERT INTO `inventory` (`barcode_number`, `serial_no`, `appliances`, `date`, `invoice_no`, `warranty_date`, `quantity`, `Status`, `user`) VALUES
 (1, 12345, 'Washing Machine', '2022-01-28', '12334', '2022-04-22', 1, 'Requested', 2),
-(2, 15689, 'Refrigerator', '2022-01-20', '14949', '2022-05-30', 1, 'Available', 1),
-(3, 7896789, 'Refrigerator', '2022-01-20', '4321', '2022-04-30', 1, 'Available', 2),
+(2, 15689, 'Refrigerator', '2022-01-20', '14949', '2022-05-30', 1, 'Requested', 1),
+(3, 7896789, 'Refrigerator', '2022-01-20', '4321', '2022-04-30', 1, 'Requested', 2),
 (4, 12345, 'Dryer', '2022-01-31', '12334', '2022-04-30', 1, 'Available', 2),
 (5, 15689, 'Dishwasher', '2022-01-31', '12334', '2022-04-30', 1, 'Requested', 1),
 (6, 3123123, 'Washing Machine', '2022-01-31', '12334', '2022-01-31', 1, 'Available', 1),
-(7, 12345, 'Dishwasher', '2022-01-31', '567890', '2022-01-31', 1, 'Available', 2);
+(7, 12345, 'Dishwasher', '2022-01-31', '567890', '2022-01-31', 1, 'Requested', 2);
 
 -- --------------------------------------------------------
 
@@ -499,15 +499,18 @@ CREATE TABLE `request` (
 
 INSERT INTO `request` (`request_id`, `srf`, `location`, `next_location`, `inventory_id`, `moved_date`, `requested_by`) VALUES
 (4, '00114', 'Sky Avenue # 3', '', 1, '2022-01-31', 'Rizwa'),
-(7, '00022', 'Kingdom ave. #23', '', 5, '2022-01-31', 'Rizwa');
+(7, '00022', 'Kingdom ave. #23', '', 5, '2022-01-31', 'Rizwa'),
+(13, '00022', 'Kingom center # 1', '', 7, '2022-01-31', 'Rizwa'),
+(14, '00114', 'Savoy # 1', '', 3, '2022-01-31', 'Rizwa'),
+(15, '00011', 'Twitter # 14', '', 2, '2022-01-31', 'Rizwa');
 
 --
 -- Triggers `request`
 --
 DELIMITER $$
-CREATE TRIGGER `statusUpdate` AFTER UPDATE ON `request` FOR EACH ROW begin
+CREATE TRIGGER `statusUpdate` AFTER INSERT ON `request` FOR EACH ROW begin
 update inventory
-set status = "Requested"
+set Status = "Requested"
 where barcode_number = new.inventory_id;
 end
 $$
@@ -598,7 +601,7 @@ ALTER TABLE `inventory`
 -- AUTO_INCREMENT for table `request`
 --
 ALTER TABLE `request`
-  MODIFY `request_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `request_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `type`

@@ -49,8 +49,7 @@
             $results_per_page = 15;
 
             // SELECT QUERY
-            // $sql = "Select appliances, count(quantity) from inventory";
-            $sql = "Select appliances, count(*) as quantity from inventory where status = 'Available' group by appliances";
+            $sql = "SELECT appliances, count(*) as quantity FROM inventory WHERE status = 'Available' GROUP BY appliances ORDER BY date";
             $result = mysqli_query($dbconn, $sql);
             $number_of_results = mysqli_num_rows($result);
 
@@ -70,12 +69,12 @@
         <div >
         <table id="customers">
             <tr>
+            <th>Request Number</th>
+            <th>Srf Number</th>
             <th>Appliances</th>
-            <th>Quantity</th>
             <th>Location</th>
             <th>New Location</th>
             <th>Date</th>
-            <th>User</th>
             </tr>
 
             <?php
@@ -86,15 +85,19 @@
             $results_per_page = 15;
 
             // SELECT QUERY
-            $sql = "Select * from inventory";
+            $sql = "SELECT * FROM request LEFT JOIN inventory ON inventory.barcode_number = request.inventory_id ORDER BY moved_date";
             $result = mysqli_query($dbconn, $sql);
             $number_of_results = mysqli_num_rows($result);
 
             while ($row = mysqli_fetch_array($result)) {
-                if ($row['quantity']<=15) {
-                    echo "<tr><td>".$row['appliances']."</td>";
-                    echo "<td id='stocklevel'>".$row['quantity']."</td></tr>";
-                }
+                    echo "<tr>
+                    <td>".$row['request_id']."</td>
+                    <td>".$row['srf']."</td>
+                    <td>".$row['appliances']."</td>
+                    <td>".$row['location']."</td>
+                    <td>".$row['next_location']."</td>
+                    <td>".$row['moved_date']."</td>
+                    </tr>";
             }
             ?>
                         
