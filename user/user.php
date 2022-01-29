@@ -84,20 +84,26 @@
             // NUMBER OF DATA IN ONE PAGE
             $results_per_page = 15;
 
+            //DATE TODAY
+            $date = new DateTime();
+
+            //FORMATTED DATE
+            $dateFormat = $date->format("Y-m-d");
+
             // SELECT QUERY
-            $sql = "SELECT * FROM request LEFT JOIN inventory ON inventory.barcode_number = request.inventory_id ORDER BY moved_date";
+            $sql = "SELECT * FROM request LEFT JOIN inventory ON inventory.barcode_number = request.inventory_id WHERE moved_date = $dateFormat ORDER BY moved_date";
             $result = mysqli_query($dbconn, $sql);
             $number_of_results = mysqli_num_rows($result);
 
             while ($row = mysqli_fetch_array($result)) {
-                    echo "<tr>
-                    <td>".$row['request_id']."</td>
-                    <td>".$row['srf']."</td>
-                    <td>".$row['appliances']."</td>
-                    <td>".$row['location']."</td>
-                    <td>".$row['next_location']."</td>
-                    <td>".$row['moved_date']."</td>
-                    </tr>";
+                echo "<tr>
+                <td>".$row['request_id']."</td>
+                <td>".$row['srf']."</td>
+                <td>".$row['appliances']."</td>
+                <td>".$row['location']."</td>
+                <td>".$row['next_location']."</td>
+                <td>".$row['moved_date']."</td>
+                </tr>";
             }
             ?>
                         
