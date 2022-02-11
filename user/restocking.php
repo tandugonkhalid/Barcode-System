@@ -33,12 +33,50 @@
         <!-- END OF NAVBAR -->
         <!-- START OF ADD MODAL -->
         <div class="p-5 col-10">
-            <div class="column-content-header">
-                <!-- TRIGGER MODAL POPUP -->
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
-                    Add item
-                </button>
-          
+            <div class="column-header">
+                <div> 
+                    <form  class="column-header-1" action="" method="post">
+                        <select class="form-control form-control-sm p-1" name="filter" id="filter">
+                                <option value="quantity">Quantity</option>
+                                <option value="date_received">Date Received</option>
+                                <option value="received_by">Received by</option>
+                        </select>                 
+                        <button type="submit" class="btn btn-primary" name="btn-filter">
+                            Filter
+                        </button>
+                    </form>
+                    <?php
+                    //DATABASE CONNECTION
+                    include("../db/dbconn.php");
+
+                    // CHECK IF INPUT IS ALREADY SET
+                    if (isset($_POST['btn-filter'])) {
+                        $filter_value = $_POST['filter'];
+                        $filter_by = "";
+                        echo $filter_value;
+
+                        if ($filter_value === ("quantity")){
+                            $sql = "SELECT barcode_number,serial_no,appliances,date,invoice_no,warranty_date,quantity,Status,account.email,account.account_id 
+                            FROM inventory LEFT JOIN account ON inventory.user=account.account_id ORDER BY date LIMIT ".$this_page_first_result.",".$results_per_page;
+                        } 
+                        else if ($filter_value === ("date_received")) { 
+                            $sql = "SELECT barcode_number,serial_no,appliances,date,invoice_no,warranty_date,quantity,Status,account.email,account.account_id 
+                            FROM inventory LEFT JOIN account ON inventory.user=account.account_id ORDER BY date LIMIT ".$this_page_first_result.",".$results_per_page;
+                        } 
+                        else { 
+                            $sql = "SELECT barcode_number,serial_no,appliances,date,invoice_no,warranty_date,quantity,Status,account.email,account.account_id 
+                            FROM inventory LEFT JOIN account ON inventory.user=account.account_id ORDER BY date LIMIT ".$this_page_first_result.",".$results_per_page;
+                        }            
+                    }
+                    mysqli_close($dbconn);
+                ?>
+
+                </div>
+                <div class="column-header-2"> 
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+                        Add item
+                    </button>
+                </div>
                 <!-- ADD MODAL POPUP -->
                 <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -143,7 +181,7 @@
             <script>
                 $(function(){
                     var dtToday = new Date();
-    
+
                     var month = dtToday.getMonth() + 1;
                     var day = dtToday.getDate();
                     var year = dtToday.getFullYear();
@@ -151,7 +189,7 @@
                         month = '0' + month.toString();
                     if(day < 10)
                         day = '0' + day.toString();
-    
+
                     var maxDate = year + '-' + month + '-' + day;
                     $('#date_received').attr('min', maxDate);
                     $('#warranty_date').attr('min', maxDate);
@@ -203,23 +241,23 @@
                     <th>Received by</th>
                     <th>Action</th>
                     </tr>
-                    
+
                     <!-- ADD PHP CODE FOR SELECT QUERY -->
                     <?php
                     // DATABASE CONNECTION
                     include("../db/dbconn.php");
                     $results_per_page = 15;
-            
+
                     // NUMBER OF PAGES DIVIDED WITH NUMBER OF DATA IN ONE PAGE
                     $number_of_pages = ceil($number_of_results/$results_per_page);
-            
+
                     // IF PAGE SELECTED IS SET
                     if(!isset($_GET['page'])){
                         $page = 1;
                     }else{
                         $page = $_GET['page'];
                     }
-            
+
                     // LIMITER FOR PAGE SELECTED
                     $this_page_first_result = ($page-1)*$results_per_page;
 
@@ -288,7 +326,7 @@
                             a.document.close();
                             a.print();
                         });
-                        
+
                     });
                 </script>
 
@@ -296,7 +334,7 @@
                 <?php
                 //DATABASE CONNECTION
                 include("../db/dbconn.php");
-                
+
                 // CHECK IF INPUT IS ALREADY SET
                 if (isset($_POST['edit_modal_btn'])) {
                     $barcode = $_POST['barcode_value'];
@@ -333,7 +371,7 @@
                     });
                 </script>
             </div>
-            
+
             <div>
                 <button class="btn btn-primary m-3 print">Print Me!</button>
             </div>
@@ -499,7 +537,7 @@
                         </div>
                     </div>
                 </div>
-        
+
             <!-- END OF MODAL POPUP -->
     </div>
 
@@ -507,4 +545,4 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 </body>
-</html>
+</html> 
