@@ -91,7 +91,8 @@
             $dateFormat = $date->format("Y-m-d");
 
             // SELECT QUERY
-            $sql = "SELECT * FROM request LEFT JOIN inventory ON inventory.barcode_number = request.inventory_id WHERE moved_date = $dateFormat ORDER BY moved_date";
+            // $sql = "SELECT * FROM request LEFT JOIN inventory ON request.inventory_id = inventory.barcode_number WHERE moved_date = $dateFormat ORDER BY moved_date";
+            $sql = "SELECT * FROM `request` LEFT JOIN inventory on request.inventory_id = inventory.inventory_id WHERE moved_date = '$dateFormat'";
             $result = mysqli_query($dbconn, $sql);
             $number_of_results = mysqli_num_rows($result);
 

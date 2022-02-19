@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="../css/user_styles/user_style.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <title>Request</title>
 </head>
 <body>
@@ -64,12 +64,12 @@
                                     <?php
                                     include("../db/dbconn.php");
 
-                                    $sql = "SELECT barcode_number, appliances FROM inventory WHERE Status = 'Available' ORDER BY date";
+                                    $sql = "SELECT inventory_id, barcode_number, appliances FROM inventory WHERE Status = 'Available' ORDER BY date";
                                     $result = mysqli_query($dbconn, $sql);
                                     $number_of_results = mysqli_num_rows($result);
 
                                     while ($row = mysqli_fetch_array($result)) {
-                                        echo "<option value=".$row['barcode_number'].">".$row['barcode_number']." ".$row['appliances']."</option>";
+                                        echo "<option value=".$row['inventory_id'].">".$row['barcode_number']." ".$row['appliances']."</option>";
                                     }
                                     mysqli_close($dbconn);
                                 ?>
@@ -132,11 +132,11 @@
                     $('#date').attr('min', maxDate);
                 });
 
-                $('#scan_barcode').click(function(){
-                    $.get('request.php', function(data){
-                        var x = data;
-                    });
-                });
+                // $('#scan_barcode').click(function(){
+                //     $.get('request.php', function(){
+                        
+                //     });
+                // });
             </script>
 
             <!-- SQL QUERY -->
@@ -210,7 +210,7 @@
 
                 // SELECT QUERY
                 $sql = "SELECT request_id, inventory.barcode_number, inventory.serial_no ,inventory.appliances , srf, location,next_location, moved_date, inventory.barcode_number, 
-                inventory.warranty_date ,requested_by, inventory.user FROM request LEFT JOIN inventory on inventory_id=inventory.barcode_number ORDER BY date 
+                inventory.warranty_date ,requested_by, inventory.user FROM request LEFT JOIN inventory on request.inventory_id=inventory.inventory_id ORDER BY date 
                 LIMIT ".$this_page_first_result.",".$results_per_page;
                 $result = mysqli_query($dbconn, $sql);
                 $number_of_results = mysqli_num_rows($result);
@@ -248,12 +248,12 @@
 
                         // CODE FOR GETTING DATA OF SELECTED ROW TO MODAL
                         var reqID_value = $(this).closest('tr').children('td:eq(0)').text();
-                        var appliances_value = $(this).closest('tr').children('td:eq(2)').text();
-                        var srf_value = $(this).closest('tr').children('td:eq(3)').text();
-                        var location_value = $(this).closest('tr').children('td:eq(4)').text();
-                        var newloc_value = $(this).closest('tr').children('td:eq(5)').text();
-                        var date_value = $(this).closest('tr').children('td:eq(6)').text();
-                        var req_value = $(this).closest('tr').children('td:eq(8)').text();
+                        var appliances_value = $(this).closest('tr').children('td:eq(3)').text();
+                        var srf_value = $(this).closest('tr').children('td:eq(4)').text();
+                        var location_value = $(this).closest('tr').children('td:eq(5)').text();
+                        var newloc_value = $(this).closest('tr').children('td:eq(6)').text();
+                        var date_value = $(this).closest('tr').children('td:eq(7)').text();
+                        var req_value = $(this).closest('tr').children('td:eq(9)').text();
                         // var user_value = $(this).closest('tr').children('td:eq(7)').text();
                         // var account_value = $(this).closest('tr').children('td:eq(8)').text();
 
@@ -316,23 +316,9 @@
                                     <div class="p-2">
                                         <label class="form-check-label" for="">Appliances</label>
                                     </div>
-                                    
-                                    <select class="form-control form-control-sm p-1 w-100 dropdown" name="appliances" id="appliances">
-                                        <!-- POPULATE DATA FROM TYPE TABLE -->
-                                        <?php
-                                        include("../db/dbconn.php");
-
-                                        $sql = "SELECT barcode_number, appliances FROM inventory WHERE Status = 'Requested' ORDER BY date";
-                                        $result = mysqli_query($dbconn, $sql);
-                                        $number_of_results = mysqli_num_rows($result);
-
-                                        while ($row = mysqli_fetch_array($result)) {
-                                            echo "<option value=".$row['barcode_number'].">".$row['appliances']."</option>";
-                                        }
-                                        mysqli_close($dbconn);
-                                    ?>
-                                    
-                                    </select>
+                                    <div class="p-1">
+                                        <input type="text" class="form-control" name="appliances" id="appliances" required>
+                                    </div>
                                     <div class="p-2">
                                         <label class="form-check-label" for="">Location</label>
                                     </div>

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 28, 2022 at 02:02 PM
+-- Generation Time: Feb 19, 2022 at 08:32 PM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 8.0.14
 
@@ -453,8 +453,9 @@ INSERT INTO `houses` (`house_id`, `villa_no`, `house_type`) VALUES
 --
 
 CREATE TABLE `inventory` (
-  `barcode_number` int(5) NOT NULL,
-  `serial_no` int(5) NOT NULL,
+  `inventory_id` int(5) NOT NULL,
+  `barcode_number` varchar(255) NOT NULL,
+  `serial_no` varchar(255) NOT NULL,
   `appliances` varchar(255) NOT NULL,
   `date` date NOT NULL,
   `invoice_no` varchar(255) NOT NULL,
@@ -468,14 +469,10 @@ CREATE TABLE `inventory` (
 -- Dumping data for table `inventory`
 --
 
-INSERT INTO `inventory` (`barcode_number`, `serial_no`, `appliances`, `date`, `invoice_no`, `warranty_date`, `quantity`, `Status`, `user`) VALUES
-(1, 12345, 'Washing Machine', '2022-01-28', '12334', '2022-04-22', 1, 'Requested', 2),
-(2, 15689, 'Refrigerator', '2022-01-20', '14949', '2022-05-30', 1, 'Requested', 1),
-(3, 7896789, 'Refrigerator', '2022-01-20', '4321', '2022-04-30', 1, 'Requested', 2),
-(4, 12345, 'Dryer', '2022-01-31', '12334', '2022-04-30', 1, 'Available', 2),
-(5, 15689, 'Dishwasher', '2022-01-31', '12334', '2022-04-30', 1, 'Requested', 1),
-(6, 3123123, 'Washing Machine', '2022-01-31', '12334', '2022-01-31', 1, 'Available', 1),
-(7, 12345, 'Dishwasher', '2022-01-31', '567890', '2022-01-31', 1, 'Requested', 2);
+INSERT INTO `inventory` (`inventory_id`, `barcode_number`, `serial_no`, `appliances`, `date`, `invoice_no`, `warranty_date`, `quantity`, `Status`, `user`) VALUES
+(1, '5000167023978', '5000167023978', 'Oven', '2022-02-28', '12334', '2022-04-30', 1, 'Available', 1),
+(2, 'Gl1116802843', 'Gl1116802843', 'Washing Machine', '2022-02-28', '4321', '2022-06-30', 1, 'Available', 2),
+(3, 'GK42-102520-000', 'GK42-102520-000', 'Dryer', '2022-03-31', '18247128', '2022-05-30', 1, 'Available', 2);
 
 -- --------------------------------------------------------
 
@@ -498,11 +495,7 @@ CREATE TABLE `request` (
 --
 
 INSERT INTO `request` (`request_id`, `srf`, `location`, `next_location`, `inventory_id`, `moved_date`, `requested_by`) VALUES
-(4, '00114', 'Sky Avenue # 3', '', 1, '2022-01-31', 'Rizwa'),
-(7, '00022', 'Kingdom ave. #23', '', 5, '2022-01-31', 'Rizwa'),
-(13, '00022', 'Kingom center # 1', '', 7, '2022-01-31', 'Rizwa'),
-(14, '00114', 'Savoy # 1', '', 3, '2022-01-31', 'Rizwa'),
-(15, '00011', 'Twitter # 14', '', 2, '2022-01-31', 'Rizwa');
+(2, '5000167023978', 'Sky Avenue # 3', '', 1, '2022-02-28', 'Rizwa');
 
 --
 -- Triggers `request`
@@ -559,7 +552,7 @@ ALTER TABLE `houses`
 -- Indexes for table `inventory`
 --
 ALTER TABLE `inventory`
-  ADD PRIMARY KEY (`barcode_number`),
+  ADD PRIMARY KEY (`inventory_id`),
   ADD KEY `user` (`user`);
 
 --
@@ -595,13 +588,13 @@ ALTER TABLE `houses`
 -- AUTO_INCREMENT for table `inventory`
 --
 ALTER TABLE `inventory`
-  MODIFY `barcode_number` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1231244;
+  MODIFY `inventory_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `request`
 --
 ALTER TABLE `request`
-  MODIFY `request_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `request_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `type`
@@ -623,7 +616,7 @@ ALTER TABLE `inventory`
 -- Constraints for table `request`
 --
 ALTER TABLE `request`
-  ADD CONSTRAINT `request_ibfk_1` FOREIGN KEY (`inventory_id`) REFERENCES `inventory` (`barcode_number`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `request_ibfk_1` FOREIGN KEY (`inventory_id`) REFERENCES `inventory` (`inventory_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

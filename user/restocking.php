@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="../css/user_styles/user_style.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <title>Restocking</title>
 </head>
 <body>
@@ -147,12 +147,12 @@
                                         <label class="form-check-label" for="">Quantity</label>
                                     </div>
                                     <div class="p-1">
-                                        <input type="text" class="form-control" name="quantity">
+                                        <input type="text" class="form-control" name="quantity" required>
                                     </div>
                                     <div class="p-2">
                                         <label class="form-check-label" for="">Received by</label>
                                     </div>
-                                    <select class="form-control form-control-sm p-1" name="users">
+                                    <select class="form-control form-control-sm p-1" name="users" required>
                                         <!-- POPULATE DATA FROM ACCOUNT TABLE -->
                                     <?php
                                         include("../db/dbconn.php");
@@ -213,11 +213,13 @@
                 $warranty = $_POST['warranty'];
                 $quantity = $_POST['quantity'];
                 $users = $_POST['users'];
-
+                
+                echo $barcode;
                 // INSERT QUERY
                 $sql = "insert into inventory (barcode_number,serial_no,appliances,date,invoice_no,warranty_date,quantity,status,user) 
                 values('$barcode','$serial','$desc','$date_received','$invoice','$warranty'
                 ,'$quantity','Available','$users')";
+                
                 if (mysqli_query($dbconn, $sql)) {
                     echo "<meta http-equiv='refresh' content='0'>";
                 } else {
@@ -301,8 +303,10 @@
                         var invoice_value = $(this).closest('tr').children('td:eq(4)').text();
                         var warranty_value = $(this).closest('tr').children('td:eq(5)').text();
                         var quantity_value = $(this).closest('tr').children('td:eq(6)').text();
-                        var user_value = $(this).closest('tr').children('td:eq(7)').text();
-                        var account_value = $(this).closest('tr').children('td:eq(8)').text();
+                        var user_value = $(this).closest('tr').children('td:eq(8)').text();
+                        // var account_value = $(this).closest('tr').children('td:eq(8)').text();
+
+                        // alert(user_value);
 
                         // CODE FOR POPULATING INPUT VALUE WITH DATA FROM SELECTED ROW IN TABLE
                         document.getElementById('barcode').value = barcode_value;
@@ -349,7 +353,7 @@
                     $users = $_POST['users_value'];
                     // $account = $_POST['account_value'];
 
-                    echo "Quantity: ".$quantity." User: ".$users." Warranty: ".$warranty;
+                    // echo "Quantity: ".$quantity." User: ".$users." Warranty: ".$warranty;
 
                     // UPDATE QUERY
                     $sql = "update inventory set serial_no='$serial', appliances='$desc', 
@@ -466,29 +470,14 @@
                                         <label class="form-check-label" for="">Quantity</label>
                                     </div>
                                     <div class="p-1">
-                                        <input type="text" class="form-control" name="quantity_value" id="quantity">
+                                        <input type="text" class="form-control" name="quantity_value" id="quantity" required>
                                     </div>
                                     <div class="p-2">
                                         <label class="form-check-label" for="">Received by</label>
                                     </div>
-                                    <select class="form-control form-control-sm p-1" name="users_value" id="user">
-                                    <!-- POPULATE DATA FROM ACCOUNT TABLE -->
-                                    <?php
-                                        include("../db/dbconn.php");
-
-                                        $sql = "Select * from account";
-                                        $result = mysqli_query($dbconn, $sql);
-                                        $number_of_results = mysqli_num_rows($result);
-
-                                        while ($row = mysqli_fetch_array($result)) {
-                                            echo "<option value=".$row['ACCOUNT_ID'].">".$row['EMAIL']."</option>";
-                                        }
-                                        mysqli_close($dbconn);
-                                    ?>
-                                    </select>
-                                    <!-- <div class="p-1">
-                                        <input type="hidden" class="form-control" name="account_value" id="account" required>
-                                    </div> -->
+                                    <div class="p-1">
+                                        <input type="text" class="form-control" name="users_value" id="user" required>
+                                    </div>
                                 </div>
                             </div>
                             <div class="modal-footer">
