@@ -33,7 +33,7 @@
     <!-- END OF NAVBAR -->
     
     <div class="p-5 col-10">
-        <div class="column-content-header">
+        <div class="column-header-2">
             <!-- TRIGGER MODAL POPUP -->
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
                 Add item
@@ -51,10 +51,10 @@
                             <div class="modal-body">
                             <div class="form-group">
                                 <div class="p-2">
-                                    <label class="form-check-label" for="">Request Number</label>
+                                    <label class="form-check-label" for="">Barcode Number</label>
                                 </div>
                                 <div class="p-1">
-                                    <input type="text" class="form-control" name="request_number" required>
+                                    <input type="text" class="form-control" name="serial_number" id="scan_barcode"required>
                                 </div>
                                 <div class="p-2">
                                     <label class="form-check-label" for="">Appliances</label>
@@ -69,7 +69,7 @@
                                     $number_of_results = mysqli_num_rows($result);
 
                                     while ($row = mysqli_fetch_array($result)) {
-                                        echo "<option value=".$row['barcode_number'].">".$row['appliances']."</option>";
+                                        echo "<option value=".$row['barcode_number'].">".$row['barcode_number']." ".$row['appliances']."</option>";
                                     }
                                     mysqli_close($dbconn);
                                 ?>
@@ -131,6 +131,12 @@
                     var maxDate = year + '-' + month + '-' + day;
                     $('#date').attr('min', maxDate);
                 });
+
+                $('#scan_barcode').click(function(){
+                    $.get('request.php', function(data){
+                        var x = data;
+                    });
+                });
             </script>
 
             <!-- SQL QUERY -->
@@ -139,7 +145,7 @@
             include("../db/dbconn.php");
 
             // CHECK IF INPUT IS ALREADY SET
-            if (isset($_POST['request_number'])) {
+            if (isset($_POST['serial_number'])) {
                 $appliance = $_POST['appliances'];
                 $srf = $_POST['srf'];
                 $location = $_POST['location'];
@@ -169,6 +175,7 @@
             <table id="customers">
                 <tr>
                 <th>Request Number</th>
+                <th>Barcode Number</th>
                 <th>Serial No.</th>
                 <th>Appliance</th>
                 <th>Srf</th>
@@ -202,7 +209,7 @@
                 $this_page_first_result = ($page-1)*$results_per_page;
 
                 // SELECT QUERY
-                $sql = "SELECT request_id, inventory.serial_no ,inventory.appliances , srf, location,next_location, moved_date, inventory.barcode_number, 
+                $sql = "SELECT request_id, inventory.barcode_number, inventory.serial_no ,inventory.appliances , srf, location,next_location, moved_date, inventory.barcode_number, 
                 inventory.warranty_date ,requested_by, inventory.user FROM request LEFT JOIN inventory on inventory_id=inventory.barcode_number ORDER BY date 
                 LIMIT ".$this_page_first_result.",".$results_per_page;
                 $result = mysqli_query($dbconn, $sql);
@@ -210,6 +217,7 @@
 
                 while ($row = mysqli_fetch_array($result)) {
                     echo "<tr><td class=row_".$row['request_id'].">".$row['request_id']."</td>
+                    <td>".$row['barcode_number']."</td>
                     <td>".$row['serial_no']."</td>
                     <td>".$row['appliances']."</td>
                     <td>".$row['srf']."</td>

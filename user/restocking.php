@@ -34,8 +34,9 @@
         <!-- START OF ADD MODAL -->
         <div class="p-5 col-10">
             <div class="column-header">
-                <div> 
-                    <form  class="column-header-1" action="" method="post">
+                <!-- <div>  -->
+                    <!-- FILTER FORM -->
+                    <!-- <form  class="column-header-1" action="" method="post">
                         <select class="form-control form-control-sm p-1" name="filter" id="filter">
                                 <option value="quantity">Quantity</option>
                                 <option value="date_received">Date Received</option>
@@ -44,34 +45,34 @@
                         <button type="submit" class="btn btn-primary" name="btn-filter">
                             Filter
                         </button>
-                    </form>
+                    </form> -->
                     <?php
-                    //DATABASE CONNECTION
-                    include("../db/dbconn.php");
+                    // //DATABASE CONNECTION
+                    // include("../db/dbconn.php");
 
-                    // CHECK IF INPUT IS ALREADY SET
-                    if (isset($_POST['btn-filter'])) {
-                        $filter_value = $_POST['filter'];
-                        $filter_by = "";
-                        echo $filter_value;
+                    // // CHECK IF INPUT IS ALREADY SET
+                    // if (isset($_POST['btn-filter'])) {
+                    //     $filter_value = $_POST['filter'];
+                    //     $filter_by = "";
+                    //     echo $filter_value;
 
-                        if ($filter_value === ("quantity")){
-                            $sql = "SELECT barcode_number,serial_no,appliances,date,invoice_no,warranty_date,quantity,Status,account.email,account.account_id 
-                            FROM inventory LEFT JOIN account ON inventory.user=account.account_id ORDER BY date LIMIT ".$this_page_first_result.",".$results_per_page;
-                        } 
-                        else if ($filter_value === ("date_received")) { 
-                            $sql = "SELECT barcode_number,serial_no,appliances,date,invoice_no,warranty_date,quantity,Status,account.email,account.account_id 
-                            FROM inventory LEFT JOIN account ON inventory.user=account.account_id ORDER BY date LIMIT ".$this_page_first_result.",".$results_per_page;
-                        } 
-                        else { 
-                            $sql = "SELECT barcode_number,serial_no,appliances,date,invoice_no,warranty_date,quantity,Status,account.email,account.account_id 
-                            FROM inventory LEFT JOIN account ON inventory.user=account.account_id ORDER BY date LIMIT ".$this_page_first_result.",".$results_per_page;
-                        }            
-                    }
-                    mysqli_close($dbconn);
+                    //     if ($filter_value === ("quantity")){
+                    //         $sql = "SELECT barcode_number,serial_no,appliances,date,invoice_no,warranty_date,quantity,Status,account.email,account.account_id 
+                    //         FROM inventory LEFT JOIN account ON inventory.user=account.account_id ORDER BY date LIMIT ".$this_page_first_result.",".$results_per_page;
+                    //     } 
+                    //     else if ($filter_value === ("date_received")) { 
+                    //         $sql = "SELECT barcode_number,serial_no,appliances,date,invoice_no,warranty_date,quantity,Status,account.email,account.account_id 
+                    //         FROM inventory LEFT JOIN account ON inventory.user=account.account_id ORDER BY date LIMIT ".$this_page_first_result.",".$results_per_page;
+                    //     } 
+                    //     else { 
+                    //         $sql = "SELECT barcode_number,serial_no,appliances,date,invoice_no,warranty_date,quantity,Status,account.email,account.account_id 
+                    //         FROM inventory LEFT JOIN account ON inventory.user=account.account_id ORDER BY date LIMIT ".$this_page_first_result.",".$results_per_page;
+                    //     }            
+                    // }
+                    // mysqli_close($dbconn);
                 ?>
 
-                </div>
+                <!-- </div> -->
                 <div class="column-header-2"> 
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
                         Add item
