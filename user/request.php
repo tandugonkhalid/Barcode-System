@@ -304,7 +304,7 @@ if(empty($_SESSION['name']) || $_SESSION['name'] == ''){
                         console.log(reqID_value);
 
                         // CODE FOR POPULATING INPUT VALUE WITH DATA FROM SELECTED ROW IN TABLE
-                        // document.getElementById('request_id').value = reqID_value;
+                        document.getElementById('request_id').value = reqID_value;
                         document.getElementById('srf').value = srf_value;
                         document.getElementById('appliances').value = appliances_value;
                         document.getElementById('location').value = location_value;
@@ -342,6 +342,12 @@ if(empty($_SESSION['name']) || $_SESSION['name'] == ''){
                         <form method="post" action="request.php">
                             <div class="modal-body">
                                 <div class="form-group">
+                                <div class="p-2">
+                                        <label class="form-check-label" for="">Request Number</label>
+                                    </div>
+                                    <div class="p-1">
+                                        <input type="text" class="form-control" name="request_id" id="request_id" required>
+                                    </div>
                                     <div class="p-2">
                                         <label class="form-check-label" for="">Srf Number</label>
                                     </div>
@@ -409,7 +415,7 @@ if(empty($_SESSION['name']) || $_SESSION['name'] == ''){
                 
                 // CHECK IF INPUT IS ALREADY SET
                 if (isset($_POST['edit_modal_btn'])) {
-                    // $reqID = $_POST['request_id'];
+                    $reqID = $_POST['request_id'];
                     $srf = $_POST['srf_number'];
                     $appliance_id = $_POST['appliances'];
                     $location = $_POST['location'];
@@ -419,7 +425,7 @@ if(empty($_SESSION['name']) || $_SESSION['name'] == ''){
                 
                     // UPDATE QUERY
                     $sql = "UPDATE request SET srf='$srf', inventory_id='$appliance_id', 
-                    moved_date='$date', location='$location', next_location='$new_location', requested_by='$requestor';";
+                    moved_date='$date', location='$location', next_location='$new_location', requested_by='$requestor' WHERE request_id = $reqID";
                     if (mysqli_query($dbconn, $sql)) {
                         // echo "updated successfully";
                         echo "<meta http-equiv='refresh' content='0'>";
