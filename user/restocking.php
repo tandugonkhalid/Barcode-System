@@ -1,3 +1,10 @@
+<?php
+session_start();
+if(empty($_SESSION['name']) || $_SESSION['name'] == ''){
+    header('location:../index.php');
+    die();
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -34,45 +41,15 @@
         <!-- START OF ADD MODAL -->
         <div class="p-5 col-10">
             <div class="column-header">
-                <!-- <div>  -->
+                <div> 
                     <!-- FILTER FORM -->
-                    <!-- <form  class="column-header-1" action="" method="post">
-                        <select class="form-control form-control-sm p-1" name="filter" id="filter">
-                                <option value="quantity">Quantity</option>
-                                <option value="date_received">Date Received</option>
-                                <option value="received_by">Received by</option>
-                        </select>                 
+                    <form action="restocking.php" method="post">
+                        <input type="text" class="w-25" name="barcode-scan">
                         <button type="submit" class="btn btn-primary" name="btn-filter">
                             Filter
                         </button>
-                    </form> -->
-                    <?php
-                    // //DATABASE CONNECTION
-                    // include("../db/dbconn.php");
-
-                    // // CHECK IF INPUT IS ALREADY SET
-                    // if (isset($_POST['btn-filter'])) {
-                    //     $filter_value = $_POST['filter'];
-                    //     $filter_by = "";
-                    //     echo $filter_value;
-
-                    //     if ($filter_value === ("quantity")){
-                    //         $sql = "SELECT barcode_number,serial_no,appliances,date,invoice_no,warranty_date,quantity,Status,account.email,account.account_id 
-                    //         FROM inventory LEFT JOIN account ON inventory.user=account.account_id ORDER BY date LIMIT ".$this_page_first_result.",".$results_per_page;
-                    //     } 
-                    //     else if ($filter_value === ("date_received")) { 
-                    //         $sql = "SELECT barcode_number,serial_no,appliances,date,invoice_no,warranty_date,quantity,Status,account.email,account.account_id 
-                    //         FROM inventory LEFT JOIN account ON inventory.user=account.account_id ORDER BY date LIMIT ".$this_page_first_result.",".$results_per_page;
-                    //     } 
-                    //     else { 
-                    //         $sql = "SELECT barcode_number,serial_no,appliances,date,invoice_no,warranty_date,quantity,Status,account.email,account.account_id 
-                    //         FROM inventory LEFT JOIN account ON inventory.user=account.account_id ORDER BY date LIMIT ".$this_page_first_result.",".$results_per_page;
-                    //     }            
-                    // }
-                    // mysqli_close($dbconn);
-                ?>
-
-                <!-- </div> -->
+                    </form>
+                </div>
                 <div class="column-header-2"> 
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
                         Add item
@@ -107,24 +84,6 @@
                                     <div class="p-1">
                                         <input type="text" class="form-control" name="desc" required>
                                     </div>
-                                    <!-- <div class="p-2">
-                                        <label class="form-check-label" for="">House type</label>
-                                    </div> -->
-                                    <!-- <select class="form-control form-control-sm p-1 w-100 dropdown" name="type"> -->
-                                        <!-- POPULATE DATA FROM TYPE TABLE -->
-                                    <?php
-                                        // include("../db/dbconn.php");
-
-                                        // $sql = "Select * from type";
-                                        // $result = mysqli_query($dbconn, $sql);
-                                        // $number_of_results = mysqli_num_rows($result);
-
-                                        // while ($row = mysqli_fetch_array($result)) {
-                                        //     echo "<option name=".$row['house_type'].">".$row['house_type']."</option>";
-                                        // }
-                                        // mysqli_close($dbconn);
-                                    ?>
-                                    <!-- </select> -->
                                     <div class="p-2">
                                         <label class="form-check-label" for="">Date Received</label>
                                     </div>
@@ -207,7 +166,6 @@
                 $barcode = $_POST['barcode'];
                 $serial = $_POST['serial_no'];
                 $desc = $_POST['desc'];
-                // $type = $_POST['type'];
                 $date_received = $_POST['date_received'];
                 $invoice = $_POST['invoice'];
                 $warranty = $_POST['warranty'];
@@ -264,25 +222,51 @@
                     // LIMITER FOR PAGE SELECTED
                     $this_page_first_result = ($page-1)*$results_per_page;
 
-                    // SELECT QUERY
-                    $sql = "SELECT barcode_number,serial_no,appliances,date,invoice_no,warranty_date,quantity,Status,account.email,account.account_id 
-                    FROM inventory LEFT JOIN account ON inventory.user=account.account_id ORDER BY date LIMIT ".$this_page_first_result.",".$results_per_page;
-                    $result = mysqli_query($dbconn, $sql);
-                    $number_of_results = mysqli_num_rows($result);
+                    if (isset($_POST['btn-filter'])) {
+                        // $filter_value = $_POST['filter'];
+                        $barcode = $_POST['barcode-scan'];
 
-                    while ($row = mysqli_fetch_array($result)) {
-                        echo "<tr><td class=row_".$row['barcode_number'].">".$row['barcode_number']."</td>
-                        <td class='serial'>".$row['serial_no']."</td>
-                        <td>".$row['appliances']."</td>
-                        <td>".$row['date']."</td>
-                        <td>".$row['invoice_no']."</td>
-                        <td>".$row['warranty_date']."</td>
-                        <td>".$row['quantity']."</td>
-                        <td>".$row['Status']."</td>
-                        <td>".$row['email']."</td>
-                        <td style='display:none'>".$row['account_id']."</td>
-                        <td><button class='btn btn-primary btn_edit' data-toggle='modal' data-target='#editmodal' id='editbtn'>Edit</button>
-                        <button class='btn btn-danger btn_delete' data-toggle='modal' data-target='#deletemodal'>Delete</button></td></tr>";
+                        // SELECT QUERY
+                        $sql = "SELECT barcode_number,serial_no,appliances,date,invoice_no,warranty_date,quantity,Status,account.email,account.account_id 
+                                FROM inventory INNER JOIN account ON inventory.user=account.account_id AND inventory.barcode_number = '$barcode'";
+                                $result = mysqli_query($dbconn, $sql);
+                                $number_of_results = mysqli_num_rows($result);
+
+                                while ($row = mysqli_fetch_array($result)) {
+                                    echo "<tr><td class=row_".$row['barcode_number'].">".$row['barcode_number']."</td>
+                                    <td class='serial'>".$row['serial_no']."</td>
+                                    <td>".$row['appliances']."</td>
+                                    <td>".$row['date']."</td>
+                                    <td>".$row['invoice_no']."</td>
+                                    <td>".$row['warranty_date']."</td>
+                                    <td>".$row['quantity']."</td>
+                                    <td>".$row['Status']."</td>
+                                    <td>".$row['email']."</td>
+                                    <td style='display:none'>".$row['account_id']."</td>
+                                    <td><button class='btn btn-primary btn_edit' data-toggle='modal' data-target='#editmodal' id='editbtn'>Edit</button>
+                                    <button class='btn btn-danger btn_delete' data-toggle='modal' data-target='#deletemodal'>Delete</button></td></tr>";
+                                }      
+                    }else{
+                        // SELECT QUERY
+                        $sql = "SELECT barcode_number,serial_no,appliances,date,invoice_no,warranty_date,quantity,Status,account.email,account.account_id 
+                        FROM inventory LEFT JOIN account ON inventory.user=account.account_id ORDER BY date LIMIT ".$this_page_first_result.",".$results_per_page;
+                        $result = mysqli_query($dbconn, $sql);
+                        $number_of_results = mysqli_num_rows($result);
+
+                        while ($row = mysqli_fetch_array($result)) {
+                            echo "<tr><td class=row_".$row['barcode_number'].">".$row['barcode_number']."</td>
+                            <td class='serial'>".$row['serial_no']."</td>
+                            <td>".$row['appliances']."</td>
+                            <td>".$row['date']."</td>
+                            <td>".$row['invoice_no']."</td>
+                            <td>".$row['warranty_date']."</td>
+                            <td>".$row['quantity']."</td>
+                            <td>".$row['Status']."</td>
+                            <td>".$row['email']."</td>
+                            <td style='display:none'>".$row['account_id']."</td>
+                            <td><button class='btn btn-primary btn_edit' data-toggle='modal' data-target='#editmodal' id='editbtn'>Edit</button>
+                            <button class='btn btn-danger btn_delete' data-toggle='modal' data-target='#deletemodal'>Delete</button></td></tr>";
+                        }
                     }
                     $Previous = $page-1;
                     $Next = $page+1;
@@ -345,15 +329,11 @@
                     $barcode = $_POST['barcode_value'];
                     $serial = $_POST['serial_value'];
                     $desc = $_POST['desc_value'];
-                    // $type = $_POST['type_value'];
                     $date_received = $_POST['date_value'];
                     $invoice = $_POST['invoice_value'];
                     $warranty = $_POST['warranty_value'];
                     $quantity = $_POST['quantity_value'];
                     $users = $_POST['users_value'];
-                    // $account = $_POST['account_value'];
-
-                    // echo "Quantity: ".$quantity." User: ".$users." Warranty: ".$warranty;
 
                     // UPDATE QUERY
                     $sql = "update inventory set serial_no='$serial', appliances='$desc', 
@@ -364,11 +344,10 @@
                     } else {
                         echo "ERROR: Could not able to execute $sql. " . mysqli_error($dbconn);
                     }
-                    echo $type." ".$users." ".$account;
                 }
                 mysqli_close($dbconn);
                 ?>
-                <!-- END OF EDIT MODAL -->
+                
                 <script>
                     $('.btn_delete').click(function(){
                         var barcode_value = $(this).closest('tr').children('td:eq(0)').text();
@@ -429,25 +408,6 @@
                                     <div class="p-1">
                                         <input type="text" class="form-control" name="desc_value" id="appliance" required>
                                     </div>
-                                    <!-- <div class="p-2">
-                                    <label class="form-check-label" for="">House type</label>
-                                    </div> -->
-                                    <!-- <select class="form-control form-control-sm p-1 w-100 dropdown" name="type_value" id="type"> -->
-                                        <!-- POPULATE DATA FROM TYPE TABLE -->
-                                    <?php
-                                        // include("../db/dbconn.php");
-
-                                        // $sql = "Select * from type";
-                                        // $result = mysqli_query($dbconn, $sql);
-                                        // $number_of_results = mysqli_num_rows($result);
-
-                                        // while ($row = mysqli_fetch_array($result)) {
-                                        //     echo "<option name=".$row['house_type'].">".$row['house_type']."</option>";
-                                        // }
-
-                                        // mysqli_close($dbconn);
-                                    ?>
-                                    <!-- </select> -->
                                     <div class="p-2">
                                         <label class="form-check-label" for="">Date Received</label>
                                     </div>
@@ -475,9 +435,21 @@
                                     <div class="p-2">
                                         <label class="form-check-label" for="">Received by</label>
                                     </div>
-                                    <div class="p-1">
-                                        <input type="text" class="form-control" name="users_value" id="user" required>
-                                    </div>
+                                    <select class="form-control form-control-sm p-1" name="users_value" id="user" required>
+                                    <!-- POPULATE DATA FROM ACCOUNT TABLE -->
+                                    <?php
+                                        include("../db/dbconn.php");
+
+                                        $sql = "Select * from account";
+                                        $result = mysqli_query($dbconn, $sql);
+                                        $number_of_results = mysqli_num_rows($result);
+
+                                        while ($row = mysqli_fetch_array($result)) {
+                                            echo "<option value=".$row['ACCOUNT_ID'].">".$row['EMAIL']."</option>";
+                                        }
+                                        mysqli_close($dbconn);
+                                    ?>
+                                    </select>
                                 </div>
                             </div>
                             <div class="modal-footer">

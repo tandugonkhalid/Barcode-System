@@ -1,4 +1,12 @@
-<?php include('db/dbconn.php');
+<?php
+error_reporting(0);
+session_start();
+
+if(!empty($_SESSION['name']) || !$_SESSION['name'] == ''){
+    header('location:user/user.php');
+    die();
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -38,10 +46,5 @@
             </form>
         </div>
     </section>
-
-
-    <?php
-        session_start();
-    ?>
 </body>
 </html>

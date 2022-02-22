@@ -1,3 +1,10 @@
+<?php
+session_start();
+if(empty($_SESSION['name']) || $_SESSION['name'] == ''){
+    header('location:../index.php');
+    die();
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -28,7 +35,7 @@
                 </li>
             </ul>
         </div>
-        <a href="../index.php" class="logout text-white">logout</a>
+        <a href="../logout/logout.php" class="logout text-white">logout</a>
     </nav>
     <!-- END OF NAVBAR -->
     <div class="p-5 col-10 column-content" >

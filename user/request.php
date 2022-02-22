@@ -1,4 +1,11 @@
 
+<?php
+session_start();
+if(empty($_SESSION['name']) || $_SESSION['name'] == ''){
+    header('location:../index.php');
+    die();
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -33,6 +40,15 @@
     <!-- END OF NAVBAR -->
     
     <div class="p-5 col-10">
+        <div> 
+            <!-- FILTER FORM -->
+            <form action="request.php" method="post">
+                <input type="text" class="w-25" name="barcode-scan">
+                <button type="submit" class="btn btn-primary" name="btn-filter">
+                            Filter
+                </button>
+            </form>
+        </div>
         <div class="column-header-2">
             <!-- TRIGGER MODAL POPUP -->
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
@@ -149,7 +165,6 @@
                 $appliance = $_POST['appliances'];
                 $srf = $_POST['srf'];
                 $location = $_POST['location'];
-                // $type = $_POST['type'];
                 $moved_location = $_POST['moved_location'];
                 $date = $_POST['date'];
                 $user = $_POST['user_request'];
@@ -208,27 +223,54 @@
                 // LIMITER FOR PAGE SELECTED
                 $this_page_first_result = ($page-1)*$results_per_page;
 
-                // SELECT QUERY
-                $sql = "SELECT request_id, inventory.barcode_number, inventory.serial_no ,inventory.appliances , srf, location,next_location, moved_date, inventory.barcode_number, 
-                inventory.warranty_date ,requested_by, inventory.user FROM request LEFT JOIN inventory on request.inventory_id=inventory.inventory_id ORDER BY date 
-                LIMIT ".$this_page_first_result.",".$results_per_page;
-                $result = mysqli_query($dbconn, $sql);
-                $number_of_results = mysqli_num_rows($result);
+                if (isset($_POST['btn-filter'])) {
+                    // $filter_value = $_POST['filter'];
+                    $barcode = $_POST['barcode-scan'];
 
-                while ($row = mysqli_fetch_array($result)) {
-                    echo "<tr><td class=row_".$row['request_id'].">".$row['request_id']."</td>
-                    <td>".$row['barcode_number']."</td>
-                    <td>".$row['serial_no']."</td>
-                    <td>".$row['appliances']."</td>
-                    <td>".$row['srf']."</td>
-                    <td>".$row['location']."</td>
-                    <td>".$row['next_location']."</td>
-                    <td>".$row['moved_date']."</td>
-                    <td>".$row['warranty_date']."</td>
-                    <td>".$row['requested_by']."</td>
-                    <td>".$row['user']."</td>
-                    <td><button class='btn btn-primary btn_edit' data-toggle='modal' data-target='#editmodal' id='editbtn'>Edit</button>
-                    <button class='btn btn-danger btn_delete' data-toggle='modal' data-target='#deletemodal'>Delete</button></td></tr>";
+                    // SELECT QUERY
+                    $sql = "SELECT request_id, inventory.barcode_number, inventory.serial_no ,inventory.appliances , srf, location,next_location, moved_date, inventory.barcode_number, 
+                    inventory.warranty_date ,requested_by, inventory.user FROM request INNER JOIN inventory on request.inventory_id=inventory.inventory_id AND inventory.barcode_number = '$barcode' ORDER BY date";
+                            $result = mysqli_query($dbconn, $sql);
+                            $number_of_results = mysqli_num_rows($result);
+
+                            while ($row = mysqli_fetch_array($result)) {
+                                echo "<tr><td class=row_".$row['request_id'].">".$row['request_id']."</td>
+                                <td>".$row['barcode_number']."</td>
+                                <td>".$row['serial_no']."</td>
+                                <td>".$row['appliances']."</td>
+                                <td>".$row['srf']."</td>
+                                <td>".$row['location']."</td>
+                                <td>".$row['next_location']."</td>
+                                <td>".$row['moved_date']."</td>
+                                <td>".$row['warranty_date']."</td>
+                                <td>".$row['requested_by']."</td>
+                                <td>".$row['user']."</td>
+                                <td><button class='btn btn-primary btn_edit' data-toggle='modal' data-target='#editmodal' id='editbtn'>Edit</button>
+                                <button class='btn btn-danger btn_delete' data-toggle='modal' data-target='#deletemodal'>Delete</button></td></tr>";
+                            }      
+                }else{
+                    // SELECT QUERY
+                    $sql = "SELECT request_id, inventory.barcode_number, inventory.serial_no ,inventory.appliances , srf, location,next_location, moved_date, inventory.barcode_number, 
+                    inventory.warranty_date ,requested_by, inventory.user FROM request LEFT JOIN inventory on request.inventory_id=inventory.inventory_id ORDER BY date 
+                    LIMIT ".$this_page_first_result.",".$results_per_page;
+                    $result = mysqli_query($dbconn, $sql);
+                    $number_of_results = mysqli_num_rows($result);
+
+                    while ($row = mysqli_fetch_array($result)) {
+                        echo "<tr><td class=row_".$row['request_id'].">".$row['request_id']."</td>
+                        <td>".$row['barcode_number']."</td>
+                        <td>".$row['serial_no']."</td>
+                        <td>".$row['appliances']."</td>
+                        <td>".$row['srf']."</td>
+                        <td>".$row['location']."</td>
+                        <td>".$row['next_location']."</td>
+                        <td>".$row['moved_date']."</td>
+                        <td>".$row['warranty_date']."</td>
+                        <td>".$row['requested_by']."</td>
+                        <td>".$row['user']."</td>
+                        <td><button class='btn btn-primary btn_edit' data-toggle='modal' data-target='#editmodal' id='editbtn'>Edit</button>
+                        <button class='btn btn-danger btn_delete' data-toggle='modal' data-target='#deletemodal'>Delete</button></td></tr>";
+                    }
                 }
                 $Previous = $page-1;
                 $Next = $page+1;
@@ -262,7 +304,7 @@
                         console.log(reqID_value);
 
                         // CODE FOR POPULATING INPUT VALUE WITH DATA FROM SELECTED ROW IN TABLE
-                        document.getElementById('request_id').value = reqID_value;
+                        // document.getElementById('request_id').value = reqID_value;
                         document.getElementById('srf').value = srf_value;
                         document.getElementById('appliances').value = appliances_value;
                         document.getElementById('location').value = location_value;
@@ -301,13 +343,6 @@
                             <div class="modal-body">
                                 <div class="form-group">
                                     <div class="p-2">
-                                        <label class="form-check-label" for="">Request Number</label>
-                                    </div>
-                                    <div class="p-1">
-                                        <input type="text" class="form-control" name="request_id" id="request_id" >
-                                    </div>
-
-                                    <div class="p-2">
                                         <label class="form-check-label" for="">Srf Number</label>
                                     </div>
                                     <div class="p-1">
@@ -316,9 +351,22 @@
                                     <div class="p-2">
                                         <label class="form-check-label" for="">Appliances</label>
                                     </div>
-                                    <div class="p-1">
-                                        <input type="text" class="form-control" name="appliances" id="appliances" required>
-                                    </div>
+                                    <select class="form-control form-control-sm p-1 w-100 dropdown" name="appliances" id="appliances" required>
+                                        <!-- POPULATE DATA FROM TYPE TABLE -->
+                                        <?php
+                                        include("../db/dbconn.php");
+
+                                        $sql = "Select * from inventory";
+                                        $result = mysqli_query($dbconn, $sql);
+                                        $number_of_results = mysqli_num_rows($result);
+
+                                        while ($row = mysqli_fetch_array($result)) {
+                                            echo "<option value=".$row['inventory_id'].">".$row['inventory_id']." ".$row['appliances']."</option>";
+                                        }
+
+                                        mysqli_close($dbconn);
+                                    ?>
+                                    </select>
                                     <div class="p-2">
                                         <label class="form-check-label" for="">Location</label>
                                     </div>
@@ -361,7 +409,7 @@
                 
                 // CHECK IF INPUT IS ALREADY SET
                 if (isset($_POST['edit_modal_btn'])) {
-                    $reqID = $_POST['request_id'];
+                    // $reqID = $_POST['request_id'];
                     $srf = $_POST['srf_number'];
                     $appliance_id = $_POST['appliances'];
                     $location = $_POST['location'];
@@ -371,7 +419,7 @@
                 
                     // UPDATE QUERY
                     $sql = "UPDATE request SET srf='$srf', inventory_id='$appliance_id', 
-                    moved_date='$date', location='$location', next_location='$new_location', requested_by='$requestor' WHERE request_id = '$reqID';";
+                    moved_date='$date', location='$location', next_location='$new_location', requested_by='$requestor';";
                     if (mysqli_query($dbconn, $sql)) {
                         // echo "updated successfully";
                         echo "<meta http-equiv='refresh' content='0'>";
