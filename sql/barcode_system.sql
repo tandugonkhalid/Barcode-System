@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 19, 2022 at 08:32 PM
+-- Generation Time: Feb 22, 2022 at 09:56 PM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 8.0.14
 
@@ -470,8 +470,8 @@ CREATE TABLE `inventory` (
 --
 
 INSERT INTO `inventory` (`inventory_id`, `barcode_number`, `serial_no`, `appliances`, `date`, `invoice_no`, `warranty_date`, `quantity`, `Status`, `user`) VALUES
-(1, '5000167023978', '5000167023978', 'Oven', '2022-02-28', '12334', '2022-04-30', 1, 'Available', 1),
-(2, 'Gl1116802843', 'Gl1116802843', 'Washing Machine', '2022-02-28', '4321', '2022-06-30', 1, 'Available', 2),
+(1, '5000167023978', '5000167023', 'Oven', '2022-02-28', '12334', '2022-04-30', 1, 'Requested', 1),
+(2, 'Gl1116802843', 'Gl1116802843', 'Washing Machine', '2022-02-28', '4321', '2022-06-30', 1, 'Available', 1),
 (3, 'GK42-102520-000', 'GK42-102520-000', 'Dryer', '2022-03-31', '18247128', '2022-05-30', 1, 'Available', 2);
 
 -- --------------------------------------------------------
@@ -487,7 +487,7 @@ CREATE TABLE `request` (
   `next_location` varchar(255) NOT NULL,
   `inventory_id` int(5) NOT NULL,
   `moved_date` varchar(255) NOT NULL,
-  `requested_by` varchar(5) NOT NULL
+  `requested_by` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -495,16 +495,24 @@ CREATE TABLE `request` (
 --
 
 INSERT INTO `request` (`request_id`, `srf`, `location`, `next_location`, `inventory_id`, `moved_date`, `requested_by`) VALUES
-(2, '5000167023978', 'Sky Avenue # 3', '', 1, '2022-02-28', 'Rizwa');
+(7, '00114', 'Kingdom ave. #23', '', 1, '2022-02-22', 'Morsalin');
 
 --
 -- Triggers `request`
 --
 DELIMITER $$
+CREATE TRIGGER `delete_request` AFTER DELETE ON `request` FOR EACH ROW begin
+update inventory
+set Status = "Available"
+where inventory_id = OLD.inventory_id;
+end
+$$
+DELIMITER ;
+DELIMITER $$
 CREATE TRIGGER `statusUpdate` AFTER INSERT ON `request` FOR EACH ROW begin
 update inventory
 set Status = "Requested"
-where barcode_number = new.inventory_id;
+where inventory_id = new.inventory_id;
 end
 $$
 DELIMITER ;
@@ -594,7 +602,7 @@ ALTER TABLE `inventory`
 -- AUTO_INCREMENT for table `request`
 --
 ALTER TABLE `request`
-  MODIFY `request_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `request_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `type`
